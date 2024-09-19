@@ -1,0 +1,9 @@
+title: "L'artiste de renom"
+description: '<p><strong>Le design</strong>, c’est son terrain de jeu. Il maîtrise et retranscrit correctement chaque pixel de la maquette.</p><p>Virtuose des couleurs il ne se trompe jamais de code HEX, de spacing ou de border-radius ; <strong>Figma n’a aucun secret pour ce Dev de talent.</strong></p>'
+color: blue
+category: design
+points: '6'
+image: '/sections/section-0.webp'
+icon: '/icons/cursor.svg'
+jury:
+  - '@maislina_'

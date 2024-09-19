@@ -1,0 +1,10 @@
+title: 'Le chercheur de breakpoint'
+description: '<p>Quelle que soit la taille de l’écran, il garantit une expérience utilisateur sans faille. Chaque site s’adapte à tous les supports, du mobile au grand écran.</p><p>Il fait attention à <strong>chaque breakpoint</strong> attentivement, on ne pourra pas le reprendre à l’inspection!</p>'
+color: blue
+category: responsive
+points: '2'
+image: '/sections/section-3.webp'
+icon: '/icons/flash.svg'
+jury:
+  - '@maislina_'
+  - '@LLCoolChris_'
