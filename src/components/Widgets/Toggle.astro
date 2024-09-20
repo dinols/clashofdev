@@ -1,0 +1,15 @@
+---
+import { Icon } from 'astro-icon/components';
+---
+
+<div
+  x-on:click="$store.global.toggleTheme()"
+  x-bind:data-enabled="$store.global.alternateTheme ? 'true' : null"
+  class="relative group h-7 w-14 rounded-full bg-black flex items-center cursor-pointer"
+>
+  <div
+    class="transition-all duration-300 absolute left-[2px] group-data-[enabled]:left-[calc(100%-26px)] h-6 w-6 rounded-full overflow-hidden bg-white flex items-center justify-center p-1"
+  >
+    <Icon name="logo" />
+  </div>
+</div>

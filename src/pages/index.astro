@@ -1,16 +1,27 @@
 ---
+import { getCollection } from 'astro:content';
+import { Icon } from 'astro-icon/components';
 
+import Main from '#/layouts/Main.astro';
+import Hero from '#/components/Hero.astro';
+import Marquee from '#/components/Widgets/Marquee.astro';
+
+const sections = await getCollection('section');
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Main>
+  <Hero />
+  <!-- <Marquee text="Lorem ipsum dolor mesiter zaez" /> -->
+  {
+    sections.map((section) => (
+      <div class="w-full h-[65vh] lg:h-[calc(100vh-40px)] bg-red-700 sticky top-0">
+        <h2>{section.id}</h2>
+      </div>
+    ))
+  }
+
+  <!-- <Icon name="smile" class="text-red-500 w-96 h-96" /> -->
+  <div class="relative w-full h-[65vh] lg:h-[calc(100vh-40px)] bg-black">
+    Click me section
+  </div>
+</Main>

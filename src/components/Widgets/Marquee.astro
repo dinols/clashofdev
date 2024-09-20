@@ -1,0 +1,39 @@
+---
+import type { JSX } from 'astro/jsx-runtime';
+
+interface Props {
+  children: JSX.Element;
+}
+
+const { children } = Astro.props;
+---
+
+<div x-data="marquee" class="relative w-full overflow-hidden">
+  <div class="flex items-center w-fit will-change-transform">
+    {
+      Array.from({ length: 4 }).map((_, i) => (
+        <span class="py-2 text-5xl font-bold flex items-center whitespace-nowrap">
+          Learum deleniti adipisci voluptates, minima fuga eius.
+        </span>
+      ))
+    }
+  </div>
+</div>
+<script>
+  import gsap from 'gsap';
+  import Alpine from 'alpinejs';
+
+  Alpine.data('marquee', () => ({
+    init() {
+      const span = this.$root.querySelector('span');
+      if (!span) return;
+
+      gsap.to(this.$root.children[0], {
+        xPercent: -25,
+        duration: 5,
+        repeat: -1,
+        ease: 'linear',
+      });
+    },
+  }));
+</script>

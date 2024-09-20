@@ -1,0 +1,24 @@
+---
+import ProgressBar from '#/components/Widgets/ProgressBar.astro';
+import Tag from '#/components/Widgets/Tag.astro';
+import Toggle from '#/components/Widgets/Toggle.astro';
+---
+
+<ProgressBar />
+<nav
+  x-data
+  class="h-10 z-10 sticky flex items-center justify-between top-10 lg:top-5 w-full"
+>
+  <div class="flex-1">
+    <Tag text="La piscine" />
+  </div>
+  <div
+    class="w-12 text-center font-bold text-xs"
+    x-show="Math.round($store.global.scrollProgress) < 100"
+    x-text="Math.round($store.global.scrollProgress) + '%'"
+  >
+  </div>
+  <div class="flex-1 flex justify-end">
+    <Toggle />
+  </div>
+</nav>

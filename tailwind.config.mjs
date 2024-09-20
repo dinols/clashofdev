@@ -6,10 +6,13 @@ export default {
       fontFamily: {
         sans: ['Inter', 'sans-serif'],
       },
+      screens: {
+        xs: '360px',
+      },
       colors: {
         // Neutral
         black: '#262625',
-        white: '##FEFEFE',
+        white: '#FEFEFE',
         beige: '#F3F3F1',
         // Colors
         blue: {

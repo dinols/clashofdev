@@ -1,0 +1,13 @@
+---
+interface Props {
+  text: string;
+}
+
+const { text } = Astro.props;
+---
+
+<div
+  class="bg-black text-purple-light uppercase font-bold px-3 py-1 w-fit rounded-full text-xs rotate-[8deg]"
+>
+  {text}
+</div>
