@@ -18,7 +18,7 @@ gsap.ticker.add((time) => {
 gsap.ticker.lagSmoothing(0);
 
 Alpine.store('global', {
-  cursor: Jury.maislina_,
+  cursor: undefined,
   hovering: false,
   alternateTheme: false,
   scrollProgress: 0,
@@ -51,6 +51,8 @@ Alpine.store('global', {
   },
 
   toggleCursor() {
+    if (window.innerWidth < 1024) return;
+
     const cursors = Object.values(Jury);
     if (!this.cursor) {
       this.cursor = cursors[0];
@@ -58,11 +60,6 @@ Alpine.store('global', {
     }
 
     const currentIndex = cursors.indexOf(this.cursor);
-    if (currentIndex === cursors.length - 1) {
-      this.cursor = undefined;
-      return;
-    }
-
-    this.cursor = cursors[currentIndex + 1];
+    this.cursor = cursors[currentIndex + 1] ?? cursors[0];
   },
 } as AlpineComponent<AlpineStore>);

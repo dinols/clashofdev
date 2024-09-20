@@ -1,0 +1,91 @@
+---
+interface Props {
+  icon: string;
+  hasSticker?: boolean;
+}
+
+import { Jury, Color } from '#/libs/types';
+
+import Cursor from '#/components/Widgets/Cursor.astro';
+
+const { icon, hasSticker = false } = Astro.props;
+---
+
+<div class="relative w-fit flex-none">
+  <button
+    x-data="card"
+    x-on:click="toggle"
+    style={{ transformStyle: 'preserve-3d', perspective: '1000px' }}
+    class="w-64 2xl:w-72 h-80 2xl:h-96 rounded-xl bg-white relative"
+  >
+    <img
+      alt="card-icon-tl"
+      class="pointer-events-none select-none absolute top-4 left-4 w-10 h-10 blur-[1px]"
+      src={icon}
+    />
+    <img
+      alt="card-icon-br"
+      class="pointer-events-none select-none absolute bottom-4 right-4 w-10 h-10 blur-[1px]"
+      src={icon}
+    />
+    <div
+      class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-2"
+    >
+      <img
+        alt="card-icon"
+        class="pointer-events-none select-none w-32 h-32 blur-[1px]"
+        src={icon}
+      />
+      <span
+        class="uppercase text-beige font-black text-2xl blur-[1px] hidden lg:inline-block"
+        >CLICK ME</span
+      >
+    </div>
+    {
+      hasSticker && (
+        <img
+          alt="card-sticker"
+          src="/sticker-cod.svg"
+          class="absolute top-0 right-0"
+          style={{
+            transform: 'translateX(20%) translateY(-40%) translateZ(20px)',
+          }}
+        />
+      )
+    }
+  </button>
+</div>
+<script>
+  import VanillaTilt from 'vanilla-tilt';
+  import Alpine from 'alpinejs';
+  import gsap from 'gsap';
+  import type { AlpineStore } from '#/libs/types';
+
+  Alpine.data('card', () => ({
+    init() {
+      VanillaTilt.init(this.$root, {
+        max: 25,
+        speed: 400,
+        glare: true,
+        'max-glare': 0.5,
+        reset: false,
+        startX: -25,
+        startY: 25,
+        'reset-to-start': false,
+      });
+    },
+
+    toggle() {
+      gsap.to(this.$el.parentElement, {
+        scale: 1.1,
+        ease: 'power2.out',
+      });
+      gsap.to(this.$el.parentElement, {
+        scale: 1,
+        delay: 0.3,
+        ease: 'bounce.out',
+      });
+      (this.$store.global as AlpineStore).toggleCursor();
+    },
+  }));
+</script>

@@ -12,3 +12,7 @@
 .hide-cursor * {
   cursor: none !important;
 }
+
+[x-data='cursor']:not([data-following]) {
+  transform: none !important;
+}

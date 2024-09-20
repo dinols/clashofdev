@@ -18,4 +18,6 @@ export type AlpineStore = {
   alternateTheme: boolean;
   cursor?: Jury;
   scrollProgress?: number;
+  toggleTheme: () => void;
+  toggleCursor: () => void;
 };

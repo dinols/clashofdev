@@ -5,26 +5,38 @@ import { Icon } from 'astro-icon/components';
 import { Color, Jury } from '#/libs/types';
 
 interface Props {
+  class?: string;
   follower?: boolean;
+  side?: 'left' | 'right';
   color: Color;
   name: Jury;
 }
 
-const { follower = true, color = Color.blue, name } = Astro.props;
+const {
+  name,
+  follower = false,
+  color = Color.blue,
+  class: className = '',
+  side = 'left',
+} = Astro.props;
 ---
 
 <div
   x-data="cursor"
-  x-bind:data-right="isRightSide ? 'true' : null"
+  x-bind:data-right="isRightSide || $el.dataset.side === 'right' ? 'true' : null"
+  x-bind:data-following="!!$el.dataset.follower && $store.global.cursor === $el.dataset.name ? 'true' : null"
+  data-side={side ?? null}
   data-follower={follower ? 'true' : null}
   data-name={name}
   class={twMerge(
-    'z-50 text-red-600 relative group gap pointer-events-none data-[follower]:fixed data-[follower]:top-0 data-[follower]:left-0',
+    'z-50 group gap pointer-events-none relative w-fit data-[following]:fixed  data-[following]:top-0  data-[following]:left-0',
     Color.blue === color && 'text-blue-mid',
     Color.pink === color && 'text-pink-mid',
     Color.green === color && 'text-green-mid',
     Color.mustard === color && 'text-mustard-mid',
-    Color.purple === color && 'text-purple-mid'
+    Color.purple === color && 'text-purple-mid',
+    Color.orange === color && 'text-orange-mid',
+    className
   )}
 >
   <Icon
@@ -35,7 +47,11 @@ const { follower = true, color = Color.blue, name } = Astro.props;
     class={twMerge(
       'absolute rounded-full px-2 py-1 border-2 rounded-tl-none group-data-[right]:rounded-tr-none group-data-[right]:rounded-tl-full text-xs font-medium text-white top-4 left-5 group-data-[right]:left-auto group-data-[right]:right-5',
       color === Color.blue && 'border-blue-dark bg-blue-mid',
-      color === Color.pink && 'border-pink-dark'
+      color === Color.pink && 'border-pink-dark bg-pink-mid',
+      color === Color.green && 'border-green-dark bg-green-mid',
+      color === Color.mustard && 'border-mustard-dark bg-mustard-mid',
+      color === Color.purple && 'border-purple-dark bg-purple-mid',
+      color === Color.orange && 'border-orange-dark bg-orange-mid'
     )}
   >
     @{name}
@@ -55,7 +71,8 @@ const { follower = true, color = Color.blue, name } = Astro.props;
           const store = this.$store.global as AlpineStore;
           if (store?.cursor !== this.$root.dataset.name) return;
 
-          this.isRightSide = e.clientX > window.innerWidth * 0.9;
+          this.$root.dataset.side = undefined;
+          this.isRightSide = e.clientX > window.innerWidth * 0.5;
 
           gsap.set(this.$root, { xPercent: this.isRightSide ? -100 : 0 });
 
@@ -63,7 +80,8 @@ const { follower = true, color = Color.blue, name } = Astro.props;
             duration: 0.1,
             x: e.clientX,
             y: e.clientY,
-            scale: store.hovering ? 1.2 : 1,
+            scale: store.hovering ? 1.1 : 1,
+            transformOrigin: 'top right',
             ease: 'power2.out',
           });
         });

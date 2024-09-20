@@ -1,44 +1,83 @@
 ---
+import { Color, Jury } from '#/libs/types';
+
 import Marquee from '#/components/Widgets/Marquee.astro';
 import Sticker from '#/components/Widgets/Sticker.astro';
-import { Color } from '#/libs/types';
+import Spin from '#/components/Animated/Spin.astro';
+import Magnetic from '#/components/Animated/Magnetic.astro';
+import Card from '#/components/Widgets/Card.astro';
+import Cursor from '#/components/Widgets/Cursor.astro';
 ---
 
 <section
-  class="min-h-[calc(100vh-80px)] lg:min-h-[calc(100vh-60px)] w-full flex flex-col"
+  class="min-h-[calc(100vh-80px)] lg:min-h-[calc(100vh-60px)] w-full flex flex-col gap-8 py-2"
 >
   <div
-    class="flex-1 flex flex-col lg:flex-row lg:items-center justify-center gap-4 lg:justify-between"
+    class="flex-1 flex flex-col lg:flex-row lg:items-center gap-x-4 gap-y-12 py-12 justify-evenly lg:justify-between"
   >
     <h1 class="invisible absolute">Clash of dev - La piscine</h1>
     <div
       class="hidden md:flex flex-col gap-2 text-7xl lg:text-8xl 2xl:text-9xl font-semibold"
     >
       <span class="hidden md:inline-block">Que le plus fort,</span>
-      <span class="italic flex items-center gap-4"
-        ><img src="/sticker-cod-alt.svg" class="h-20 w-auto" /> l'emporte !</span
-      >
+      <div class="italic flex items-center gap-4">
+        <Magnetic>
+          <img
+            alt="sticker-cod-alt"
+            src="/sticker-cod-alt.svg"
+            class="h-20 w-auto"
+          />
+        </Magnetic>
+        <span> l'emporte ! </span>
+      </div>
     </div>
     <div
-      class="flex md:hidden flex-col gap-3 text-4xl xs:text-6xl font-semibold"
+      class="flex md:hidden mx-auto flex-col gap-3 text-5xl xs:text-6xl font-semibold"
     >
-      <span class="flex items-end gap-4"
-        >Que le <img
-          src="/sticker-cod-alt.svg"
-          class="h-14 xs:h-20 w-auto"
-        /></span
-      >
+      <div class="flex items-end gap-4">
+        <span>Que le </span>
+        <Magnetic>
+          <img
+            alt="sticker-cod-alt"
+            src="/sticker-cod-alt.svg"
+            class="h-14 xs:h-16 w-auto"
+          />
+        </Magnetic>
+      </div>
       <span class="inline-block">plus fort,</span>
       <span class="italic flex items-center gap-4">l'emporte !</span>
     </div>
-    <div>Carte</div>
+    <div class="w-fit relative mx-auto lg:mx-12 xl:mx-20">
+      <Card icon="/crown.svg" hasSticker />
+      <Cursor
+        class="absolute top-24 right-8"
+        color={Color.orange}
+        name={Jury.maislina_}
+        follower
+      />
+      <Cursor
+        class="absolute bottom-8 right-12"
+        color={Color.blue}
+        name={Jury.LLCoolChris_}
+        follower
+      />
+      <Cursor
+        class="absolute bottom-12 left-12"
+        side="right"
+        color={Color.pink}
+        name={Jury.sometimecrea}
+        follower
+      />
+    </div>
   </div>
   <Marquee speed={8} class="-mx-8 w-screen">
-    <span class="text-6xl xs:text-7xl lg:text-8xl 2xl:text-10xl font-semibold"
+    <span
+      class="text-6xl xs:text-7xl lg:text-8xl xl:text-9xl 2xl:text-10xl font-semibold"
       >{'<A>Front les Tous!'}</span
     >
     <Sticker size="medium" color={Color.green} name="tag" />
-    <span class="text-6xl xs:text-7xl lg:text-8xl 2xl:text-10xl font-semibold"
+    <span
+      class="text-6xl xs:text-7xl lg:text-8xl xl:text-9xl 2xl:text-10xl font-semibold"
       >Clash of Dev</span
     >
     <Sticker size="medium" name="smile" />

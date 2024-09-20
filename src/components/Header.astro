@@ -2,6 +2,7 @@
 import ProgressBar from '#/components/Widgets/ProgressBar.astro';
 import Tag from '#/components/Widgets/Tag.astro';
 import Toggle from '#/components/Widgets/Toggle.astro';
+import Magnetic from '#/components/Animated/Magnetic.astro';
 ---
 
 <ProgressBar />
@@ -11,7 +12,9 @@ import Toggle from '#/components/Widgets/Toggle.astro';
 >
   <div class="flex-1">
     <a href="/">
-      <Tag text="La piscine" />
+      <Magnetic>
+        <Tag text="La piscine" />
+      </Magnetic>
     </a>
   </div>
   <div

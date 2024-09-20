@@ -1,0 +1,37 @@
+<div x-data="magnetic" class="flex-none w-fit h-fit">
+  <slot />
+</div>
+<script>
+  import Alpine from 'alpinejs';
+  import gsap from 'gsap';
+
+  Alpine.data('magnetic', () => ({
+    init() {
+      const xTo = gsap.quickTo(this.$root, 'x', {
+        duration: 1,
+        ease: 'elastic.out(1, 0.3)',
+      });
+      const yTo = gsap.quickTo(this.$root, 'y', {
+        duration: 1,
+        ease: 'elastic.out(1, 0.3)',
+      });
+
+      const mouseMove = (e: MouseEvent) => {
+        const { clientX, clientY } = e;
+        const { width, height, left, top } = this.$root.getBoundingClientRect();
+        const x = clientX - (left + width / 2);
+        const y = clientY - (top + height / 2);
+        xTo(x);
+        yTo(y);
+      };
+
+      const mouseLeave = (e: MouseEvent) => {
+        xTo(0);
+        yTo(0);
+      };
+
+      this.$root.addEventListener('mousemove', mouseMove);
+      this.$root.addEventListener('mouseleave', mouseLeave);
+    },
+  }));
+</script>

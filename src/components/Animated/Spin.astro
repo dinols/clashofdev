@@ -1,0 +1,44 @@
+---
+interface Props {
+  loop?: boolean;
+}
+
+const { loop = false } = Astro.props;
+---
+
+<div
+  x-data="spin"
+  data-loop={loop ? 'true' : null}
+  class="flex-none w-fit h-fit"
+>
+  <slot />
+</div>
+<script>
+  import Alpine from 'alpinejs';
+  import gsap from 'gsap';
+  import type { AlpineStore } from '#/libs/types';
+
+  Alpine.data('spin', () => ({
+    init() {
+      if (this.$root.dataset.loop) {
+        gsap.to(this.$root, {
+          rotate: 360,
+          duration: 4,
+          repeat: -1,
+          ease: 'linear',
+        });
+        return;
+      }
+
+      Alpine.effect(() => {
+        if (this.$root.dataset.loop) return;
+        gsap.to(this.$root, {
+          rotate:
+            ((this.$store.global as AlpineStore).scrollProgress ?? 0) * 40,
+          duration: 1,
+          ease: 'linear',
+        });
+      });
+    },
+  }));
+</script>
