@@ -4,6 +4,8 @@ import 'lenis/dist/lenis.css';
 
 import Header from '#/components/Header.astro';
 import Footer from '#/components/Footer.astro';
+import Cursor from '#/components/Widgets/Cursor.astro';
+import { Color, Jury } from '#/libs/types';
 
 interface Props {
   title?: string;
@@ -20,46 +22,13 @@ const { title = 'Clash of Dev — La piscine' } = Astro.props;
     <title>{title}</title>
     <meta name="description" content="Un évènement organisé par @maislina_" />
   </head>
-  <body class="relative bg-beige min-h-screen flex flex-col px-8 py-10 lg:py-5">
+  <body
+    class="relative bg-beige w-screen overflow-x-hidden min-h-screen flex flex-col px-4 xs:px-8 py-10 lg:py-5"
+  >
     <Header />
+    <Cursor color={Color.blue} name={Jury.maislina_} />
     <slot />
     <Footer />
-    <script>
-      import Lenis from 'lenis';
-      import { gsap } from 'gsap';
-      import { ScrollTrigger } from 'gsap/ScrollTrigger';
-      import Alpine from 'alpinejs';
-
-      gsap.registerPlugin(ScrollTrigger);
-
-      const lenis = new Lenis();
-
-      lenis.on('scroll', ScrollTrigger.update);
-
-      gsap.ticker.add((time) => {
-        lenis.raf(time * 1000);
-      });
-
-      gsap.ticker.lagSmoothing(0);
-
-      Alpine.store('global', {
-        alternateTheme: false,
-        scrollProgress: 0,
-
-        init() {
-          lenis.on('scroll', (e) => {
-            this.scrollProgress = e.progress * 100;
-          });
-        },
-
-        toggleTheme() {
-          this.alternateTheme = !this.alternateTheme;
-        },
-      } as {
-        scrollProgress: number;
-        alternateTheme: boolean;
-        init: () => void;
-      });
-    </script>
+    <script src="../libs/utils.ts"></script>
   </body>
 </html>

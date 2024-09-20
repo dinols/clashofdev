@@ -1,0 +1,30 @@
+---
+import { Icon } from 'astro-icon/components';
+import { Color } from '#/libs/types';
+import { twMerge } from 'tailwind-merge';
+
+interface Props {
+  color?: Color;
+  name: string;
+  size: 'large' | 'medium' | 'small' | 'tiny';
+}
+
+const { color, name = 'cursor', size = 'medium' } = Astro.props;
+---
+
+<div
+  class={twMerge(
+    'rounded-full bg-black text-white flex items-center justify-center',
+    size === 'large' && 'h-32 w-32 lg:h-80 lg:w-80 text-4xl lg:text-8xl',
+    size === 'medium' && 'h-16 w-16 lg:h-20 lg:w-20 text-xl lg:text-2xl',
+    size === 'small' && 'h-10 w-10 text-base',
+    size === 'tiny' && 'h-8 w-8 text-xs',
+    Color.blue === color && 'bg-blue-mid text-blue-mid',
+    Color.pink === color && 'bg-pink-mid text-pink-light',
+    Color.green === color && 'bg-green-mid text-green-light',
+    Color.mustard === color && 'bg-mustard-mid text-mustard-mid',
+    Color.purple === color && 'bg-purple-mid text-purple-mid'
+  )}
+>
+  <Icon name={name} />
+</div>

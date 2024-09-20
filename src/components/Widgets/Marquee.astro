@@ -1,20 +1,25 @@
 ---
-import type { JSX } from 'astro/jsx-runtime';
+import { twMerge } from 'tailwind-merge';
 
 interface Props {
-  children: JSX.Element;
+  class?: string;
+  speed?: number;
 }
 
-const { children } = Astro.props;
+const { class: className = '', speed = 5 } = Astro.props;
 ---
 
-<div x-data="marquee" class="relative w-full overflow-hidden">
+<div
+  x-data="marquee"
+  data-speed={speed}
+  class={twMerge('relative w-full overflow-hidden', className)}
+>
   <div class="flex items-center w-fit will-change-transform">
     {
-      Array.from({ length: 4 }).map((_, i) => (
-        <span class="py-2 text-5xl font-bold flex items-center whitespace-nowrap">
-          Learum deleniti adipisci voluptates, minima fuga eius.
-        </span>
+      Array.from({ length: 4 }).map(() => (
+        <div class="flex items-center gap-6 px-3 whitespace-nowrap">
+          <slot />
+        </div>
       ))
     }
   </div>
@@ -30,7 +35,7 @@ const { children } = Astro.props;
 
       gsap.to(this.$root.children[0], {
         xPercent: -25,
-        duration: 5,
+        duration: this.$root.dataset.speed,
         repeat: -1,
         ease: 'linear',
       });

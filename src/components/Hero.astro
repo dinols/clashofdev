@@ -1,13 +1,46 @@
 ---
-
+import Marquee from '#/components/Widgets/Marquee.astro';
+import Sticker from '#/components/Widgets/Sticker.astro';
+import { Color } from '#/libs/types';
 ---
 
 <section
-  class="h-[calc(100vh-80px)] lg:h-[calc(100vh-60px)] w-full flex flex-col"
+  class="min-h-[calc(100vh-80px)] lg:min-h-[calc(100vh-60px)] w-full flex flex-col"
 >
-  <div class="flex-1 flex flex-col lg:flex-row lg:items-center justify-between">
-    <div>Texte</div>
+  <div
+    class="flex-1 flex flex-col lg:flex-row lg:items-center justify-center gap-4 lg:justify-between"
+  >
+    <h1 class="invisible absolute">Clash of dev - La piscine</h1>
+    <div
+      class="hidden md:flex flex-col gap-2 text-7xl lg:text-8xl 2xl:text-9xl font-semibold"
+    >
+      <span class="hidden md:inline-block">Que le plus fort,</span>
+      <span class="italic flex items-center gap-4"
+        ><img src="/sticker-cod-alt.svg" class="h-20 w-auto" /> l'emporte !</span
+      >
+    </div>
+    <div
+      class="flex md:hidden flex-col gap-3 text-4xl xs:text-6xl font-semibold"
+    >
+      <span class="flex items-end gap-4"
+        >Que le <img
+          src="/sticker-cod-alt.svg"
+          class="h-14 xs:h-20 w-auto"
+        /></span
+      >
+      <span class="inline-block">plus fort,</span>
+      <span class="italic flex items-center gap-4">l'emporte !</span>
+    </div>
     <div>Carte</div>
   </div>
-  <div>Marquee</div>
+  <Marquee speed={8} class="-mx-8 w-screen">
+    <span class="text-6xl xs:text-7xl lg:text-8xl 2xl:text-10xl font-semibold"
+      >{'<A>Front les Tous!'}</span
+    >
+    <Sticker size="medium" color={Color.green} name="tag" />
+    <span class="text-6xl xs:text-7xl lg:text-8xl 2xl:text-10xl font-semibold"
+      >Clash of Dev</span
+    >
+    <Sticker size="medium" name="smile" />
+  </Marquee>
 </section>
