@@ -51,6 +51,8 @@ gsap.ticker.add((time) => {
 
 gsap.ticker.lagSmoothing(0);
 
+const timelines: GSAPTimeline[] = [];
+
 Alpine.store('global', {
   cursor: undefined,
   hovering: false,
@@ -83,6 +85,58 @@ Alpine.store('global', {
   toggleTheme() {
     this.darkTheme = !this.darkTheme;
     document.body.classList.toggle('dark');
+
+    const sections = document.querySelectorAll('[x-data="section"]');
+
+    if (this.darkTheme) {
+      sections.forEach((section) => {
+        // Animate in
+        const tl1 = gsap.timeline({
+          scrollTrigger: {
+            trigger: section,
+            start: 'top 90%',
+            end: 'top 20%',
+            scrub: 0.5,
+          },
+        });
+        tl1
+          .from(section, {
+            scale: 0.85,
+            rotate: 10,
+            y: 100,
+          })
+          .to(section, {
+            scale: 1,
+            rotate: 0,
+            y: 0,
+          });
+
+        // Animate out
+        const tl2 = gsap.timeline({
+          scrollTrigger: {
+            trigger: section,
+            start: 'top 0%',
+            end: 'top -80%',
+            scrub: 0.5,
+          },
+        });
+        tl2.to(section, {
+          scale: 0.85,
+          rotate: -10,
+        });
+
+        timelines.push(tl1, tl2);
+      });
+
+      ScrollTrigger.refresh();
+    } else {
+      timelines.forEach((tl) => {
+        sections.forEach((section) => {
+          gsap.set(section, { clearProps: 'all' });
+        });
+        tl.kill();
+      });
+    }
   },
 
   toggleCursor() {
