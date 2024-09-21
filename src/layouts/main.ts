@@ -95,7 +95,7 @@ Alpine.store('global', {
           scrollTrigger: {
             trigger: section,
             start: 'top 90%',
-            end: 'top 20%',
+            end: 'top 30%',
             scrub: 0.5,
           },
         });
