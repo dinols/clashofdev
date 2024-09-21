@@ -50,19 +50,19 @@ import Cursor from '#/components/Widgets/Cursor.astro';
     <div class="w-fit relative mx-auto lg:mx-12 xl:mx-20">
       <Card icon="/crown.svg" hasSticker />
       <Cursor
-        class="absolute top-24 right-8"
+        class="absolute bottom-40 -right-8"
         color={Color.orange}
         name={Jury.maislina_}
         follower
       />
       <Cursor
-        class="absolute bottom-8 right-12"
+        class="absolute bottom-2 -right-4"
         color={Color.blue}
         name={Jury.LLCoolChris_}
         follower
       />
       <Cursor
-        class="absolute bottom-12 left-12"
+        class="absolute bottom-2 -left-4"
         side="right"
         color={Color.pink}
         name={Jury.sometimecrea}
@@ -70,7 +70,7 @@ import Cursor from '#/components/Widgets/Cursor.astro';
       />
     </div>
   </div>
-  <Marquee speed={8} class="-mx-8 w-screen">
+  <Marquee speed={8} class="-mx-4 xs:-mx-8 w-screen">
     <span
       class="text-6xl xs:text-7xl lg:text-8xl xl:text-9xl 2xl:text-10xl font-semibold"
       >{'<A>Front les Tous!'}</span
@@ -78,8 +78,9 @@ import Cursor from '#/components/Widgets/Cursor.astro';
     <Sticker size="medium" color={Color.green} name="tag" />
     <span
       class="text-6xl xs:text-7xl lg:text-8xl xl:text-9xl 2xl:text-10xl font-semibold"
-      >Clash of Dev</span
     >
+      Clash of Dev
+    </span>
     <Sticker size="medium" name="smile" />
   </Marquee>
 </section>

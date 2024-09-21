@@ -17,7 +17,7 @@ export type AlpineStore = {
   hovering: boolean;
   alternateTheme: boolean;
   cursor?: Jury;
-  scrollProgress?: number;
+  scrollProgress: number;
   toggleTheme: () => void;
   toggleCursor: () => void;
 };

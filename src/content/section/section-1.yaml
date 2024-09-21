@@ -1,9 +1,9 @@
 title: 'Le bâtisseur de code'
-description: '<p>Ses lignes de code sont des fondations solides. C’est un maître du front, capable de structurer les systèmes les plus complexes sans se casser la tête.</p><p><strong>Maître de VSCode</strong>, il a sûrement fini le challenge en s’assurant d’avoir le code le plus clair et le plus propre des 36 participants.</p>'
+description: '<p>Ses lignes de code sont des fondations solides. C’est un maître du front, capable de structurer les systèmes les plus complexes sans se casser la tête.</p><br/><br/><p><strong>Maître de VSCode</strong>, il a sûrement fini le challenge en s’assurant d’avoir le code le plus clair et le plus propre des 36 participants.</p>'
 color: pink
 category: code
 points: '6'
 image: '/sections/section-1.webp'
-icon: '/icons/tag.svg'
+icon: 'tag'
 jury:
-  - '@LLCoolChris_'
+  - 'LLCoolChris_'

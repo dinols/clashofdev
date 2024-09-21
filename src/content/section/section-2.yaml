@@ -1,10 +1,10 @@
 title: 'Le maître de la fluidité'
-description: '<p>Aucun composant ne s’affiche sans une <strong>animation soignée</strong>. Ses transitions sont légères, dynamiques et fluides, captivant l’utilisateur à chaque interaction.</p><p>Ce dev a l’œil et maîtrise le <strong>motion</strong> mieux que n’importe qui.</p>'
+description: '<p>Aucun composant ne s’affiche sans une <strong>animation soignée</strong>. Ses transitions sont légères, dynamiques et fluides, captivant l’utilisateur à chaque interaction.</p><br/><br/><p>Ce dev a l’œil et maîtrise le <strong>motion</strong> mieux que n’importe qui.</p>'
 color: green
 category: motion
 points: '3'
 image: '/sections/section-2.webp'
-icon: '/icons/star.svg'
+icon: 'star'
 jury:
-  - '@maislina_'
-  - '@LLCoolChris_'
+  - 'maislina_'
+  - 'LLCoolChris_'

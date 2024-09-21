@@ -29,7 +29,7 @@ const {
   data-follower={follower ? 'true' : null}
   data-name={name}
   class={twMerge(
-    'z-50 group gap pointer-events-none relative w-fit data-[following]:fixed  data-[following]:top-0  data-[following]:left-0',
+    'z-50 group gap pointer-events-none relative flex flex-col data-[right]:items-end flex-none h-fit w-fit',
     Color.blue === color && 'text-blue-mid',
     Color.pink === color && 'text-pink-mid',
     Color.green === color && 'text-green-mid',
@@ -45,7 +45,7 @@ const {
   />
   <div
     class={twMerge(
-      'absolute rounded-full px-2 py-1 border-2 rounded-tl-none group-data-[right]:rounded-tr-none group-data-[right]:rounded-tl-full text-xs font-medium text-white top-4 left-5 group-data-[right]:left-auto group-data-[right]:right-5',
+      'relative -mt-5 -ml-1 rounded-full px-2 py-1 border-2 rounded-tl-none group-data-[right]:rounded-tr-none group-data-[right]:rounded-tl-full text-xs font-medium text-white top-4 left-5 group-data-[right]:left-auto group-data-[right]:right-5',
       color === Color.blue && 'border-blue-dark bg-blue-mid',
       color === Color.pink && 'border-pink-dark bg-pink-mid',
       color === Color.green && 'border-green-dark bg-green-mid',
@@ -80,6 +80,9 @@ const {
             duration: 0.1,
             x: e.clientX,
             y: e.clientY,
+            position: 'fixed',
+            top: 0,
+            left: 0,
             scale: store.hovering ? 1.1 : 1,
             transformOrigin: 'top right',
             ease: 'power2.out',

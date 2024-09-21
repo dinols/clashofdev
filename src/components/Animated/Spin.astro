@@ -32,9 +32,10 @@ const { loop = false } = Astro.props;
 
       Alpine.effect(() => {
         if (this.$root.dataset.loop) return;
+
         gsap.to(this.$root, {
           rotate:
-            ((this.$store.global as AlpineStore).scrollProgress ?? 0) * 40,
+            ((this.$store.global as AlpineStore).scrollProgress * 20) % 360,
           duration: 1,
           ease: 'linear',
         });

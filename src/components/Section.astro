@@ -1,0 +1,75 @@
+---
+import type { InferEntrySchema } from 'astro:content';
+import { twMerge } from 'tailwind-merge';
+
+import type { Color, Jury } from '#/libs/types';
+import Cursor from '#/components/Widgets/Cursor.astro';
+import Spin from '#/components/Animated/Spin.astro';
+import Sticker from '#/components/Widgets/Sticker.astro';
+
+interface Props {
+  data: InferEntrySchema<'section'>;
+}
+
+const { data } = Astro.props;
+---
+
+<section
+  x-data
+  class={twMerge(
+    'rounded-[60px] w-full min-h-[540px] h-[65vh] lg:h-[calc(100vh-40px)] overflow-hidden sticky top-0 p-12 gap-10 flex flex-col',
+    data.color === 'pink' && 'bg-pink-light',
+    data.color === 'blue' && 'bg-blue-light',
+    data.color === 'purple' && 'bg-purple-light',
+    data.color === 'green' && 'bg-green-light',
+    data.color === 'mustard' && 'bg-mustard-light',
+    data.color === 'orange' && 'bg-orange-light'
+  )}
+>
+  <div
+    class="flex items-start justify-between gap-4 lg:gap-12 text-xs text-black"
+  >
+    <div class="flex flex-col gap-1 lg:gap-2 2xl:pl-12 opacity-60 font-medium">
+      <span class="uppercase">{data.category}</span>
+      <span class="capitalize">/{data.points} pts</span>
+    </div>
+    <div class="flex-1 text-left">
+      <h2 class="font-bold uppercase">{data.title}</h2>
+    </div>
+    <div
+      class="absolute lg:relative right-12 lg:right-0 top-24 lg:top-0 flex items-center gap-6"
+    >
+      {
+        data.jury.map((jury) => (
+          <Cursor color={data.color as Color} name={jury as Jury} />
+        ))
+      }
+    </div>
+  </div>
+  <div class="flex-1 flex flex-col lg:flex-row items-start gap-4">
+    <div
+      class="lg:flex-1 w-full lg:w-auto lg:h-full aspect-[16/10] overflow-hidden lg:aspect-auto relative rounded-[20px] lg:rounded-[40px]"
+    >
+      <!-- TODO Draggable -->
+      <img
+        src={data.image}
+        class="absolute top-0 left-0 object-cover object-center h-full w-full"
+      />
+    </div>
+    <div
+      class="max-w-full w-60 h-20 py-4 opacity-60 text-xs 2xl:text-sm text-black leading-relaxed"
+      set:html={data.description}
+    />
+  </div>
+  <div
+    class="absolute bottom-0 right-0 transform translate-x-12 translate-y-12"
+  >
+    <Spin>
+      <Sticker
+        name={data.icon ?? 'cursor'}
+        color={data.color as Color}
+        size="large"
+      />
+    </Spin>
+  </div>
+</section>
