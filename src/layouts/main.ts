@@ -89,7 +89,7 @@ Alpine.store('global', {
     const sections = document.querySelectorAll('[x-data="section"]');
 
     if (this.darkTheme) {
-      sections.forEach((section) => {
+      sections.forEach((section, index) => {
         // Animate in
         const tl1 = gsap.timeline({
           scrollTrigger: {
@@ -103,7 +103,7 @@ Alpine.store('global', {
           .from(section, {
             scale: 0.85,
             rotate: 10,
-            y: 100,
+            y: index === 0 ? 100 : 0,
           })
           .to(section, {
             scale: 1,
