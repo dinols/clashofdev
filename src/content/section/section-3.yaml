@@ -3,7 +3,6 @@ description: '<p>Quelle que soit la taille de l’écran, il garantit une expér
 color: blue
 category: responsive
 points: '2'
-image: '/sections/section-3.webp'
 icon: 'flash'
 jury:
   - 'maislina_'

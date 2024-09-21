@@ -3,7 +3,6 @@ description: '<p>Aucun composant ne s’affiche sans une <strong>animation soign
 color: green
 category: motion
 points: '3'
-image: '/sections/section-2.webp'
 icon: 'star'
 jury:
   - 'maislina_'

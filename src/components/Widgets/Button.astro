@@ -1,0 +1,116 @@
+---
+import { twMerge } from 'tailwind-merge';
+
+import { Color } from '#/libs/types';
+import Sticker from '#/components/Widgets/Sticker.astro';
+import Magnetic from '#/components/Animated/Magnetic.astro';
+
+interface Props {
+  text: string;
+  color: 'white' | 'black';
+  href?: string;
+}
+
+const { text = 'click me', color = 'black', href } = Astro.props;
+---
+
+<div x-data="button" class="w-fit relative">
+  <div class="absolute z-20 top-0 left-0 -translate-x-1/4 -translate-y-1/4">
+    <Magnetic>
+      <Sticker name="star" color={Color.green} size="tiny" />
+    </Magnetic>
+  </div>
+  <div class="absolute z-20 bottom-0 right-4 translate-y-1/2">
+    <Magnetic>
+      <Sticker name="flash" color={Color.blue} size="small" />
+    </Magnetic>
+  </div>
+  <div class="absolute z-0 top-0 right-0 translate-x-1/2 -translate-y-1/2">
+    <Magnetic>
+      <Sticker name="tag" color={Color.pink} size="medium" />
+    </Magnetic>
+  </div>
+  <button
+    class={twMerge(
+      'rounded-full relative z-10 bg-black text-white px-12 py-5 text-xs xs:text-sm flex items-center justify-center font-semibold',
+      color === 'white' && 'bg-white text-black'
+    )}
+    x-on:click="click"
+    data-href={href}
+    type="button"
+    role="button"
+  >
+    {text}
+  </button>
+  <canvas
+    id="confetti-canvas"
+    class="absolute -bottom-12 left-1/2 -translate-x-1/2 w-screen h-screen pointer-events-none z-0"
+  ></canvas>
+</div>
+<script>
+  import Alpine from 'alpinejs';
+  import gsap from 'gsap';
+  import confetti from 'canvas-confetti';
+
+  const scalar = 2;
+  const rocket = confetti.shapeFromText({ text: '🚀', scalar });
+  const defaults = {
+    spread: 360,
+    ticks: 60,
+    gravity: 0,
+    decay: 0.96,
+    startVelocity: 20,
+    shapes: [rocket],
+    scalar,
+    zIndex: 0,
+    origin: { y: 0.9 },
+  };
+
+  const confettiCanvas = confetti.create(
+    document.getElementById('confetti-canvas') as HTMLCanvasElement,
+    {
+      resize: true,
+      useWorker: true,
+    }
+  );
+
+  const shoot = () => {
+    confettiCanvas({
+      ...defaults,
+      particleCount: 30,
+    });
+
+    confettiCanvas({
+      ...defaults,
+      particleCount: 15,
+    });
+
+    confettiCanvas({
+      ...defaults,
+      particleCount: 15,
+      scalar: scalar / 2,
+      shapes: ['circle'],
+    });
+  };
+
+  Alpine.data('button', () => ({
+    click(e: MouseEvent) {
+      const target = e.currentTarget as HTMLButtonElement;
+
+      if (target.dataset.href) {
+        window.location.href = target.dataset.href;
+        return;
+      }
+
+      gsap.fromTo(
+        this.$root,
+        { scale: 1 },
+        { scale: 0.9, duration: 0.2, yoyo: true, repeat: 1, overwrite: true }
+      );
+
+      setTimeout(shoot, 0);
+      setTimeout(shoot, 100);
+      setTimeout(shoot, 200);
+    },
+  }));
+</script>

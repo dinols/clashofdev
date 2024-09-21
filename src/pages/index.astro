@@ -11,6 +11,15 @@ const sections = await getCollection('section');
 
 <Main>
   <Hero />
-  {sections.map((section) => <Section data={section.data} />)}
+  {
+    sections.map((section) => (
+      <Section
+        data={{
+          id: section.id,
+          ...section.data,
+        }}
+      />
+    ))
+  }
   <BottomSection />
 </Main>

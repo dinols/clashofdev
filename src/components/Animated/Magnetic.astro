@@ -1,4 +1,14 @@
-<div x-data="magnetic" class="flex-none w-fit h-fit">
+---
+import { twMerge } from 'tailwind-merge';
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<div x-data="magnetic" class={twMerge('flex-none w-fit h-fit', className)}>
   <slot />
 </div>
 <script>

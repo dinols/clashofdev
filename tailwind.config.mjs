@@ -10,7 +10,7 @@ export default {
         sans: ['Inter', 'sans-serif'],
       },
       screens: {
-        xs: '360px',
+        xs: '400px',
       },
       colors: {
         // Neutral

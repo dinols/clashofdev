@@ -1,8 +1,31 @@
-<div class="-mx-4 xs:-mx-8 w-screen relative z-10 px-4 xs:px-8">
+---
+import Button from '#/components/Widgets/Button.astro';
+import Sticker from '#/components/Widgets/Sticker.astro';
+import Magnetic from '#/components/Animated/Magnetic.astro';
+---
+
+<div
+  class="-mx-4 xs:-mx-8 w-screen h-[65vh] lg:h-[calc(100vh-40px)] min-h-[540px] relative z-10 px-4 xs:px-8"
+>
   <div
-    class="rounded-[60px] relative w-full h-[65vh] lg:h-[calc(100vh-40px)] bg-black"
+    class="rounded-[60px] relative w-full h-full bg-black py-12 px-12 xl:px-24 flex flex-col items-center justify-between"
   >
-    Click me section
+    <div></div>
+    <div class="flex relative flex-col gap-12 w-full max-w-screen-2xl mx-auto">
+      <span class="text-white opacity-80 text-xs">/ FINALE02</span>
+      <h5
+        class="text-3xl leading-snug xs:text-5xl xs:leading-tight font-sans md:text-7xl md:leading-tight lg:text-8xl xl:text-9xl 2xl:text-10xl font-semibold text-white"
+      >
+        <span>Click Me</span>
+        <span class="inline-block md:ml-3 md:mr-9 2xl:ml-6 2xl:mr-16">?</span>
+        <span>Might enter the finals </span>
+        <Magnetic class="inline-block absolute">
+          <Sticker name="smile" size="large" />
+        </Magnetic>
+      </h5>
+    </div>
+    <Button text="Enter Next Level" color="white" />
   </div>
-  <div class="h-1/2 w-full -z-10 bottom-0 absolute left-0 bg-beige"></div>
+
+  <div class="h-full w-full -z-10 top-16 absolute left-0 bg-beige"></div>
 </div>

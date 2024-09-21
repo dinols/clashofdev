@@ -8,14 +8,16 @@ import Spin from '#/components/Animated/Spin.astro';
 import Sticker from '#/components/Widgets/Sticker.astro';
 
 interface Props {
-  data: InferEntrySchema<'section'>;
+  data: InferEntrySchema<'section'> & {
+    id: string;
+  };
 }
 
 const { data } = Astro.props;
 ---
 
 <section
-  x-data
+  x-data="section"
   class={twMerge(
     'rounded-[60px] w-full min-h-[540px] h-[65vh] lg:h-[calc(100vh-40px)] overflow-hidden sticky top-0 p-12 gap-10 flex flex-col',
     data.color === 'pink' && 'bg-pink-light',
@@ -31,7 +33,9 @@ const { data } = Astro.props;
   >
     <div class="flex flex-col gap-1 lg:gap-2 2xl:pl-12 opacity-60 font-medium">
       <span class="uppercase">{data.category}</span>
-      <span class="capitalize">/{data.points} pts</span>
+      <span class="capitalize"
+        >/{data.points} <span class="lowercase">pts</span></span
+      >
     </div>
     <div class="flex-1 text-left">
       <h2 class="font-bold uppercase">{data.title}</h2>
@@ -46,15 +50,23 @@ const { data } = Astro.props;
       }
     </div>
   </div>
-  <div class="flex-1 flex flex-col lg:flex-row items-start gap-4">
+  <div class="flex-1 flex relative z-10 flex-col lg:flex-row items-start gap-4">
     <div
       class="lg:flex-1 w-full lg:w-auto lg:h-full aspect-[16/10] overflow-hidden lg:aspect-auto relative rounded-[20px] lg:rounded-[40px]"
     >
-      <!-- TODO Draggable -->
-      <img
-        src={data.image}
-        class="absolute top-0 left-0 object-cover object-center h-full w-full"
-      />
+      <div
+        x-ref="images"
+        class="absolute top-0 left-0 h-full w-[200%] flex rounded-[20px] lg:rounded-[40px] overflow-hidden"
+      >
+        <img
+          src={`/sections/${data.id}.webp`}
+          class="pointer-events-none select-none object-cover object-center h-full w-1/2"
+        />
+        <img
+          src={`/sections/${data.id}-alt.webp`}
+          class="pointer-events-none select-none object-cover object-center h-full w-1/2"
+        />
+      </div>
     </div>
     <div
       class="max-w-full w-60 h-20 py-4 opacity-60 text-xs 2xl:text-sm text-black leading-relaxed"
@@ -62,7 +74,7 @@ const { data } = Astro.props;
     />
   </div>
   <div
-    class="absolute bottom-0 right-0 transform translate-x-12 translate-y-12"
+    class="absolute bottom-0 right-0 transform translate-x-[15%] translate-y-[15%] z-0"
   >
     <Spin>
       <Sticker
@@ -73,3 +85,62 @@ const { data } = Astro.props;
     </Spin>
   </div>
 </section>
+<script>
+  import Alpine from 'alpinejs';
+  import gsap from 'gsap';
+  import { Draggable } from 'gsap/Draggable';
+
+  Alpine.data('section', () => ({
+    init() {
+      let velocity = 0;
+      let lastX = 0;
+      let decayFactor = 0.95;
+      let isAnimating = false;
+
+      Draggable.create(this.$refs.images, {
+        type: 'x',
+        bounds: this.$refs.images.parentElement,
+        edgeResistance: 0.9,
+        onDrag: function () {
+          velocity = this.x - lastX;
+          lastX = this.x;
+        },
+        onDragEnd: function () {
+          startMomentum(this);
+        },
+      })[0];
+
+      function startMomentum(draggable: Draggable.Vars) {
+        if (isAnimating) return;
+        isAnimating = true;
+
+        function decay() {
+          if (Math.abs(velocity) < 0.1) {
+            isAnimating = false;
+            return;
+          }
+
+          velocity *= decayFactor;
+
+          let newX = Number(gsap.getProperty(draggable.target, 'x')) + velocity;
+
+          const minX = draggable.minX;
+          const maxX = draggable.maxX;
+          if (newX < minX) {
+            newX = minX;
+            velocity = 0;
+          } else if (newX > maxX) {
+            newX = maxX;
+            velocity = 0;
+          }
+
+          gsap.set(draggable.target, { x: newX });
+
+          requestAnimationFrame(decay);
+        }
+
+        decay();
+      }
+    },
+  }));
+</script>

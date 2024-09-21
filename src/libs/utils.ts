@@ -1,11 +1,13 @@
 import Lenis from 'lenis';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { Draggable } from 'gsap/Draggable';
 import Alpine, { type AlpineComponent } from 'alpinejs';
 
 import { Jury, type AlpineStore } from './types';
 
 gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(Draggable);
 
 const lenis = new Lenis();
 

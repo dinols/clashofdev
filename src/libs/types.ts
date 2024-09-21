@@ -5,6 +5,7 @@ export enum Color {
   orange = 'orange',
   pink = 'pink',
   purple = 'purple',
+  black = 'black',
 }
 
 export enum Jury {
