@@ -16,7 +16,7 @@ export enum Jury {
 
 export type AlpineStore = {
   hovering: boolean;
-  alternateTheme: boolean;
+  darkTheme: boolean;
   cursor?: Jury;
   scrollProgress: number;
   toggleTheme: () => void;

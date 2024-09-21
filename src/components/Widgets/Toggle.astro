@@ -4,11 +4,11 @@ import { Icon } from 'astro-icon/components';
 
 <button
   x-on:click="$store.global.toggleTheme()"
-  x-bind:data-enabled="$store.global.alternateTheme ? 'true' : null"
-  class="relative group h-7 w-14 rounded-full bg-black flex items-center"
+  x-bind:data-enabled="$store.global.darkTheme ? 'true' : null"
+  class="relative group h-7 w-14 rounded-full bg-black dark:bg-beige flex items-center"
 >
   <div
-    class="transition-all duration-300 absolute left-[2px] group-data-[enabled]:left-[calc(100%-26px)] h-6 w-6 rounded-full overflow-hidden bg-white flex items-center justify-center p-1"
+    class="transition-all duration-300 absolute left-[2px] group-data-[enabled]:left-[calc(100%-26px)] h-6 w-6 rounded-full overflow-hidden bg-white dark:bg-black/30 flex items-center justify-center p-1"
   >
     <Icon name="logo" />
   </div>

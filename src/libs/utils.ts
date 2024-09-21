@@ -22,7 +22,7 @@ gsap.ticker.lagSmoothing(0);
 Alpine.store('global', {
   cursor: undefined,
   hovering: false,
-  alternateTheme: false,
+  darkTheme: false,
   scrollProgress: 0,
 
   init() {
@@ -49,7 +49,8 @@ Alpine.store('global', {
   },
 
   toggleTheme() {
-    this.alternateTheme = !this.alternateTheme;
+    this.darkTheme = !this.darkTheme;
+    document.body.classList.toggle('dark');
   },
 
   toggleCursor() {

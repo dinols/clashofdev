@@ -32,8 +32,8 @@ const { text = 'click me', color = 'black', href } = Astro.props;
   </div>
   <button
     class={twMerge(
-      'rounded-full relative z-10 bg-black text-white px-12 py-5 text-xs xs:text-sm flex items-center justify-center font-semibold',
-      color === 'white' && 'bg-white text-black'
+      'rounded-full relative z-10 bg-black dark:bg-beige text-white dark:text-black px-12 py-5 text-xs xs:text-sm flex items-center justify-center font-semibold',
+      color === 'white' && 'bg-white dark:bg-black text-black dark:text-beige'
     )}
     x-on:click="click"
     data-href={href}
@@ -52,7 +52,7 @@ const { text = 'click me', color = 'black', href } = Astro.props;
   import gsap from 'gsap';
   import confetti from 'canvas-confetti';
 
-  const scalar = 2;
+  const scalar = window.innerWidth < 1024 ? 2 : 3;
   const rocket = confetti.shapeFromText({ text: '🚀', scalar });
   const defaults = {
     spread: 360,

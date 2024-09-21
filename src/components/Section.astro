@@ -6,6 +6,7 @@ import type { Color, Jury } from '#/libs/types';
 import Cursor from '#/components/Widgets/Cursor.astro';
 import Spin from '#/components/Animated/Spin.astro';
 import Sticker from '#/components/Widgets/Sticker.astro';
+import Magnetic from '#/components/Animated/Magnetic.astro';
 
 interface Props {
   data: InferEntrySchema<'section'> & {
@@ -20,16 +21,16 @@ const { data } = Astro.props;
   x-data="section"
   class={twMerge(
     'rounded-[60px] w-full min-h-[540px] h-[65vh] lg:h-[calc(100vh-40px)] overflow-hidden sticky top-0 p-12 gap-10 flex flex-col',
-    data.color === 'pink' && 'bg-pink-light',
-    data.color === 'blue' && 'bg-blue-light',
-    data.color === 'purple' && 'bg-purple-light',
-    data.color === 'green' && 'bg-green-light',
-    data.color === 'mustard' && 'bg-mustard-light',
-    data.color === 'orange' && 'bg-orange-light'
+    data.color === 'pink' && 'bg-pink-light dark:bg-pink-dark',
+    data.color === 'blue' && 'bg-blue-light dark:bg-blue-dark',
+    data.color === 'purple' && 'bg-purple-light dark:bg-purple-dark',
+    data.color === 'green' && 'bg-green-light dark:bg-green-dark',
+    data.color === 'mustard' && 'bg-mustard-light dark:bg-mustard-dark',
+    data.color === 'orange' && 'bg-orange-light dark:bg-orange-dark'
   )}
 >
   <div
-    class="flex items-start justify-between gap-4 lg:gap-12 text-xs text-black"
+    class="flex items-start justify-between gap-4 lg:gap-12 text-xs text-black dark:text-beige"
   >
     <div class="flex flex-col gap-1 lg:gap-2 2xl:pl-12 opacity-60 font-medium">
       <span class="uppercase">{data.category}</span>
@@ -45,7 +46,9 @@ const { data } = Astro.props;
     >
       {
         data.jury.map((jury) => (
-          <Cursor color={data.color as Color} name={jury as Jury} />
+          <Magnetic>
+            <Cursor color={data.color as Color} name={jury as Jury} />
+          </Magnetic>
         ))
       }
     </div>
@@ -69,7 +72,7 @@ const { data } = Astro.props;
       </div>
     </div>
     <div
-      class="max-w-full w-60 h-20 py-4 opacity-60 text-xs 2xl:text-sm text-black leading-relaxed"
+      class="max-w-full w-60 h-20 py-4 opacity-60 dark:opacity-80 text-xs 2xl:text-sm text-black dark:text-beige leading-relaxed"
       set:html={data.description}
     />
   </div>

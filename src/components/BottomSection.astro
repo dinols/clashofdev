@@ -8,7 +8,7 @@ import Magnetic from '#/components/Animated/Magnetic.astro';
   class="-mx-4 xs:-mx-8 w-screen h-[65vh] lg:h-[calc(100vh-40px)] min-h-[540px] relative z-10 px-4 xs:px-8"
 >
   <div
-    class="rounded-[60px] relative w-full h-full bg-black py-12 px-12 xl:px-24 flex flex-col items-center justify-between"
+    class="rounded-[60px] relative w-full h-full bg-black dark:bg-blue-dark py-12 px-12 xl:px-24 flex flex-col items-center justify-between"
   >
     <div></div>
     <div class="flex relative flex-col gap-12 w-full max-w-screen-2xl mx-auto">
@@ -27,5 +27,8 @@ import Magnetic from '#/components/Animated/Magnetic.astro';
     <Button text="Enter Next Level" color="white" />
   </div>
 
-  <div class="h-full w-full -z-10 top-16 absolute left-0 bg-beige"></div>
+  <div
+    class="h-full w-full -z-10 top-16 absolute left-0 bg-beige dark:bg-black"
+  >
+  </div>
 </div>
