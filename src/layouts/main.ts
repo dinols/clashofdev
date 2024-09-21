@@ -1,10 +1,42 @@
+/**
+ * Initializes the main layout script.
+ *
+ * This script sets up various functionalities including smooth scrolling with Lenis,
+ * scroll-triggered animations with GSAP, and state management with Alpine.js.
+ *
+ * Dependencies:
+ * - Lenis: Smooth scrolling library.
+ * - GSAP: Animation library.
+ * - Alpine.js: Reactive state management library.
+ *
+ * Features:
+ * - Registers GSAP plugins: ScrollTrigger and Draggable.
+ * - Sets up Lenis for smooth scrolling and integrates it with GSAP's ticker.
+ * - Initializes an Alpine.js store named 'global' with the following properties:
+ *   - `cursor`: Manages the custom cursor state.
+ *   - `hovering`: Tracks whether the mouse is hovering over interactive elements.
+ *   - `darkTheme`: Toggles the dark theme.
+ *   - `scrollProgress`: Tracks the scroll progress as a percentage.
+ *
+ * The `init` method of the Alpine store:
+ * - Listens to Lenis scroll events to update `scrollProgress`.
+ * - Reactively toggles the 'hide-cursor' class on the body based on the `cursor` state.
+ * - Adds event listeners to buttons and anchor elements to update the `hovering` state.
+ *
+ * The `toggleTheme` method:
+ * - Toggles the `darkTheme` state and updates the body's class list accordingly.
+ *
+ * The `toggleCursor` method:
+ * - Cycles through custom cursor states defined in the `Jury` enum, if the window width is 1024px or greater.
+ */
+
 import Lenis from 'lenis';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Draggable } from 'gsap/Draggable';
 import Alpine, { type AlpineComponent } from 'alpinejs';
 
-import { Jury, type AlpineStore } from './types';
+import { Jury, type AlpineStore } from '#/libs/types';
 
 gsap.registerPlugin(ScrollTrigger);
 gsap.registerPlugin(Draggable);

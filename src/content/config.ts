@@ -13,7 +13,6 @@ const sectionCollection = defineCollection({
       'pink',
       'purple',
     ] as const),
-    image: z.string().optional(),
     icon: z.string().optional(),
     category: z.string(),
     points: z.string(),

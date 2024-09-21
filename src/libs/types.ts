@@ -1,3 +1,4 @@
+// COLOR PALETTE
 export enum Color {
   blue = 'blue',
   green = 'green',
@@ -8,12 +9,14 @@ export enum Color {
   black = 'black',
 }
 
+// JURY
 export enum Jury {
   LLCoolChris_ = 'LLCoolChris_',
   maislina_ = 'maislina_',
   sometimecrea = 'sometimecrea',
 }
 
+// GLOBAL STORE
 export type AlpineStore = {
   hovering: boolean;
   darkTheme: boolean;

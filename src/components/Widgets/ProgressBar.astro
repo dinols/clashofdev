@@ -1,3 +1,8 @@
+---
+// Progress bar based on the scroll progress of the website.
+// Progress is stored in the global store.
+---
+
 <div
   x-data
   x-bind:style="`width: ${$store.global.scrollProgress}%;`"

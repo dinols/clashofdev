@@ -1,12 +1,10 @@
 ---
+// This component is used to display a card with an icon and a sticker.
+
 interface Props {
   icon: string;
   hasSticker?: boolean;
 }
-
-import { Jury, Color } from '#/libs/types';
-
-import Cursor from '#/components/Widgets/Cursor.astro';
 
 const { icon, hasSticker = false } = Astro.props;
 ---

@@ -1,4 +1,6 @@
 ---
+// This component is used to wrap a child element and apply a magnetic effect to it.
+
 import { twMerge } from 'tailwind-merge';
 
 interface Props {
@@ -35,7 +37,7 @@ const { class: className } = Astro.props;
         yTo(y);
       };
 
-      const mouseLeave = (e: MouseEvent) => {
+      const mouseLeave = () => {
         xTo(0);
         yTo(0);
       };
