@@ -6,6 +6,8 @@ import { Icon } from 'astro-icon/components';
 ---
 
 <button
+  aria-label="Toggle Theme"
+  role="button"
   x-on:click="$store.global.toggleTheme()"
   x-bind:data-enabled="$store.global.darkTheme ? 'true' : null"
   class="relative group h-7 w-14 rounded-full bg-black dark:bg-beige flex items-center"

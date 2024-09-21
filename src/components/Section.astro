@@ -64,10 +64,12 @@ const { data } = Astro.props;
         class="absolute top-0 left-0 h-full w-[200%] flex rounded-[20px] lg:rounded-[40px] overflow-hidden"
       >
         <img
+          alt={data.title}
           src={`/sections/${data.id}.webp`}
           class="pointer-events-none select-none object-cover object-center h-full w-1/2"
         />
         <img
+          alt={data.title + ' alternative'}
           src={`/sections/${data.id}-alt.webp`}
           class="pointer-events-none select-none object-cover object-center h-full w-1/2"
         />

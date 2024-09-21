@@ -10,6 +10,7 @@ const { icon, hasSticker = false } = Astro.props;
 ---
 
 <button
+  aria-label="card"
   x-data="card"
   x-on:click="toggle"
   style={{ transformStyle: 'preserve-3d', perspective: '1000px' }}
