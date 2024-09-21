@@ -3,7 +3,6 @@ import { Color, Jury } from '#/libs/types';
 
 import Marquee from '#/components/Widgets/Marquee.astro';
 import Sticker from '#/components/Widgets/Sticker.astro';
-import Spin from '#/components/Animated/Spin.astro';
 import Magnetic from '#/components/Animated/Magnetic.astro';
 import Card from '#/components/Widgets/Card.astro';
 import Cursor from '#/components/Widgets/Cursor.astro';
@@ -17,7 +16,7 @@ import Cursor from '#/components/Widgets/Cursor.astro';
   >
     <h1 class="invisible absolute">Clash of dev - La piscine</h1>
     <div
-      class="hidden md:flex flex-col gap-2 text-7xl lg:text-8xl 2xl:text-9xl font-semibold"
+      class="hidden md:flex flex-col gap-2 text-black text-7xl lg:text-8xl 2xl:text-9xl font-semibold"
     >
       <span class="hidden md:inline-block">Que le plus fort,</span>
       <div class="italic flex items-center gap-4">
@@ -32,7 +31,7 @@ import Cursor from '#/components/Widgets/Cursor.astro';
       </div>
     </div>
     <div
-      class="flex md:hidden mx-auto flex-col gap-3 text-5xl xs:text-6xl font-semibold"
+      class="flex md:hidden mx-auto flex-col text-black gap-3 text-5xl xs:text-6xl font-semibold"
     >
       <div class="flex items-end gap-4">
         <span>Que le </span>
@@ -53,24 +52,21 @@ import Cursor from '#/components/Widgets/Cursor.astro';
         class="absolute bottom-40 -right-8"
         color={Color.orange}
         name={Jury.maislina_}
-        follower
       />
       <Cursor
         class="absolute bottom-2 -right-4"
         color={Color.blue}
         name={Jury.LLCoolChris_}
-        follower
       />
       <Cursor
         class="absolute bottom-2 -left-4"
         side="right"
         color={Color.pink}
         name={Jury.sometimecrea}
-        follower
       />
     </div>
   </div>
-  <Marquee speed={8} class="-mx-4 xs:-mx-8 w-screen">
+  <Marquee speed={8} class="-mx-4 xs:-mx-8 w-screen text-black">
     <span
       class="text-6xl xs:text-7xl lg:text-8xl xl:text-9xl 2xl:text-10xl font-semibold"
       >{'<A>Front les Tous!'}</span

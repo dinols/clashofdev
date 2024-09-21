@@ -23,36 +23,42 @@ const {
 
 <div
   x-data="cursor"
-  x-bind:data-right="isRightSide || $el.dataset.side === 'right' ? 'true' : null"
-  x-bind:data-following="!!$el.dataset.follower && $store.global.cursor === $el.dataset.name ? 'true' : null"
-  data-side={side ?? null}
+  x-bind:data-right="isRightSide ? 'true' : null"
+  x-bind:data-name={`$el.dataset.follower ? $store.global.cursor : '${name}'`}
+  data-color={color}
+  x-bind:data-color={`$el.dataset.follower ? colors[$store.global.cursor] : '${color}'`}
   data-follower={follower ? 'true' : null}
-  data-name={name}
   class={twMerge(
-    'z-50 group gap pointer-events-none relative flex flex-col data-[right]:items-end flex-none h-fit w-fit',
-    Color.blue === color && 'text-blue-mid',
-    Color.pink === color && 'text-pink-mid',
-    Color.green === color && 'text-green-mid',
-    Color.mustard === color && 'text-mustard-mid',
-    Color.purple === color && 'text-purple-mid',
-    Color.orange === color && 'text-orange-mid',
+    'z-50 group gap pointer-events-none relative flex flex-col data-[right]:items-end flex-none h-fit w-fit data-[follower]:fixed data-[follower]:top-0 data-[follower]:opacity-0 data-[follower]:left-0',
+    'data-[color="blue"]:text-blue-mid',
+    'data-[color="pink"]:text-pink-mid',
+    'data-[color="green"]:text-green-mid',
+    'data-[color="mustard"]:text-mustard-mid',
+    'data-[color="purple"]:text-purple-mid',
+    'data-[color="orange"]:text-orange-mid',
+    side === 'right' ? 'items-end' : 'items-start',
     className
   )}
 >
   <Icon
     name="cursor"
-    class="group-data-[right]:scale-x-[1] scale-x-[-1] transition-all"
+    class={twMerge(
+      'group-data-[right]:scale-x-[1] scale-x-[-1]',
+      side === 'right' && 'scale-x-[1]'
+    )}
   />
   <div
     class={twMerge(
       'relative -mt-5 -ml-1 rounded-full px-2 py-1 border-2 rounded-tl-none group-data-[right]:rounded-tr-none group-data-[right]:rounded-tl-full text-xs font-medium text-white top-4 left-5 group-data-[right]:left-auto group-data-[right]:right-5',
-      color === Color.blue && 'border-blue-dark bg-blue-mid',
-      color === Color.pink && 'border-pink-dark bg-pink-mid',
-      color === Color.green && 'border-green-dark bg-green-mid',
-      color === Color.mustard && 'border-mustard-dark bg-mustard-mid',
-      color === Color.purple && 'border-purple-dark bg-purple-mid',
-      color === Color.orange && 'border-orange-dark bg-orange-mid'
+      'group-data-[color="blue"]:border-blue-dark group-data-[color="blue"]:bg-blue-mid',
+      'group-data-[color="pink"]:border-pink-dark group-data-[color="pink"]:bg-pink-mid',
+      'group-data-[color="green"]:border-green-dark group-data-[color="green"]:bg-green-mid',
+      'group-data-[color="mustard"]:border-mustard-dark group-data-[color="mustard"]:bg-mustard-mid',
+      'group-data-[color="purple"]:border-purple-dark group-data-[color="purple"]:bg-purple-mid',
+      'group-data-[color="orange"]:border-orange-dark group-data-[color="orange"]:bg-orange-mid',
+      side === 'right' && 'rounded-tr-none rounded-tl-full left-auto right-5'
     )}
+    x-text={`$root.dataset.follower ? '@' + $store.global.cursor : '@${name}'`}
   >
     @{name}
   </div>
@@ -60,18 +66,21 @@ const {
 <script>
   import gsap from 'gsap';
   import Alpine from 'alpinejs';
-  import type { AlpineStore } from '#/libs/types';
+  import { Color, type AlpineStore } from '#/libs/types';
 
   Alpine.data('cursor', () => ({
     isRightSide: false,
+    colors: {
+      maislina_: Color.orange,
+      LLCoolChris_: Color.blue,
+      sometimecrea: Color.pink,
+    },
 
     init() {
       if (this.$root.dataset.follower) {
         window.addEventListener('mousemove', (e) => {
           const store = this.$store.global as AlpineStore;
-          if (store?.cursor !== this.$root.dataset.name) return;
 
-          this.$root.dataset.side = undefined;
           this.isRightSide = e.clientX > window.innerWidth * 0.5;
 
           gsap.set(this.$root, { xPercent: this.isRightSide ? -100 : 0 });
@@ -83,6 +92,7 @@ const {
             position: 'fixed',
             top: 0,
             left: 0,
+            opacity: store.cursor === this.$root.dataset.name ? 1 : 0,
             scale: store.hovering ? 1.1 : 1,
             transformOrigin: 'top right',
             ease: 'power2.out',
