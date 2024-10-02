@@ -1,0 +1,43 @@
+---
+import '../global.css';
+import 'lenis/dist/lenis.css';
+
+import { getCollection } from 'astro:content';
+
+import Header from '#/components/Header.astro';
+import Cursor from '#/components/Widgets/Cursor.astro';
+import { MachineProvider } from '#/components/Game/MachineContext';
+import { Color, Jury } from '#/libs/types';
+
+interface Props {
+  title?: string;
+}
+
+const { title = 'Clash of Dev — La finale' } = Astro.props;
+const sections = await getCollection('section');
+---
+
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/icons/logo.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <title>{title}</title>
+    <meta name="description" content="Un évènement organisé par @maislina_" />
+  </head>
+  <body
+    class="relative bg-beige dark:bg-black w-screen overflow-x-hidden min-h-screen flex flex-col px-4 xs:px-8 py-10 lg:py-5"
+  >
+    <Cursor
+      follower
+      color={Object.values(Color)[0]}
+      name={Object.values(Jury)[0]}
+    />
+    <Header tag="LA FINALE" hidePercentage />
+    <MachineProvider
+      sections={sections.map((section) => section.data)}
+      code={null}
+    />
+    <script src="./main.ts"></script>
+  </body>
+</html>

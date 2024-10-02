@@ -3,10 +3,12 @@ import { defineConfig } from 'astro/config';
 
 import tailwind from '@astrojs/tailwind';
 import alpinejs from '@astrojs/alpinejs';
+import react from '@astrojs/react';
 import icon from 'astro-icon';
 
 // https://astro.build/config
 export default defineConfig({
+  output: 'hybrid',
   integrations: [
     tailwind({
       applyBaseStyles: false,
@@ -14,6 +16,9 @@ export default defineConfig({
     alpinejs(),
     icon({
       iconDir: 'public/icons',
+    }),
+    react({
+      experimentalReactChildren: true,
     }),
   ],
 });
