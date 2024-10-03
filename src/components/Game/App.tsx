@@ -1,17 +1,19 @@
 import React from 'react';
-import { useSelector } from '@xstate/react';
 
-import { useGameContext } from '#/components/Game/MachineContext';
+import type { Section } from '#/content/config';
+import { MachineProvider } from '#/components/Game/MachineContext';
+import Screens from '#/components/Game/Screens';
 
-const App: React.FC = () => {
-  const { machineService } = useGameContext();
-  const context = useSelector(machineService, (state) => state.context);
-
+const App: React.FC<{
+  sections: Section[];
+  code: string | null;
+}> = ({ code, sections }) => {
   return (
-    <div>
-      <h1>Welcome to Clash of Dev</h1>
-      <p>{JSON.stringify(context)}</p>
-    </div>
+    <MachineProvider code={code} sections={sections}>
+      <div className="h-screen w-full overflow-hidden absolute top-0 left-0">
+        <Screens />
+      </div>
+    </MachineProvider>
   );
 };
 

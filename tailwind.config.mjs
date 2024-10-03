@@ -4,6 +4,12 @@ export default {
   content: ['./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}'],
   theme: {
     extend: {
+      backgroundImage: {
+        radient:
+          'radial-gradient(50% 50% at 50% 50%, #5A5A59 0%, #262625 100%)',
+        'radient-light':
+          'radial-gradient(50% 50% at 50% 50%, #B3B3B4 0%, #F3F3F1 100%)',
+      },
       fontSize: {
         '10xl': '10rem',
       },

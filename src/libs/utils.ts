@@ -34,3 +34,13 @@ export const generateKeys = (mode: GameMode): string[] => {
     return keys[randomIndex];
   });
 };
+
+export const extractStateValue = (value: any): string => {
+  if (!value) return '';
+
+  if (typeof value === 'string') {
+    return value;
+  }
+
+  return Object.keys(value)[0] ?? '';
+};

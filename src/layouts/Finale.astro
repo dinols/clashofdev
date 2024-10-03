@@ -2,11 +2,8 @@
 import '../global.css';
 import 'lenis/dist/lenis.css';
 
-import { getCollection } from 'astro:content';
-
 import Header from '#/components/Header.astro';
 import Cursor from '#/components/Widgets/Cursor.astro';
-import { MachineProvider } from '#/components/Game/MachineContext';
 import { Color, Jury } from '#/libs/types';
 
 interface Props {
@@ -14,7 +11,6 @@ interface Props {
 }
 
 const { title = 'Clash of Dev — La finale' } = Astro.props;
-const sections = await getCollection('section');
 ---
 
 <html lang="fr">
@@ -26,7 +22,7 @@ const sections = await getCollection('section');
     <meta name="description" content="Un évènement organisé par @maislina_" />
   </head>
   <body
-    class="relative bg-beige dark:bg-black w-screen overflow-x-hidden min-h-screen flex flex-col px-4 xs:px-8 py-10 lg:py-5"
+    class="dark relative bg-radient-light dark:bg-radient bg-no-repeat bg-center bg-contain w-screen overflow-x-hidden min-h-screen flex flex-col px-4 xs:px-8 py-10 lg:py-5"
   >
     <Cursor
       follower
@@ -34,10 +30,7 @@ const sections = await getCollection('section');
       name={Object.values(Jury)[0]}
     />
     <Header tag="LA FINALE" hidePercentage />
-    <MachineProvider
-      sections={sections.map((section) => section.data)}
-      code={null}
-    />
+    <slot />
     <script src="./main.ts"></script>
   </body>
 </html>

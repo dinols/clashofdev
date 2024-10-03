@@ -142,6 +142,29 @@ export const machine = ({ code = null }: { code: string | null }) =>
       setTime: assign({
         startAt: new Date().getTime() + 5000,
       }),
+      setScore: assign({
+        players: ({ context }) => {
+          if (context.type === 'multiplayer') return context.players;
+
+          const [self] = context.players;
+          const total = self.inputs.reduce((acc, input, index) => {
+            return acc + (input === context.keys[index] ? 1 : 0);
+          }, 0);
+
+          return [
+            {
+              ...self,
+              score: self.score + (total > context.keys.length / 2 ? 1 : 0),
+            },
+            {
+              ...context.players[1],
+              score:
+                context.players[1].score +
+                (total <= context.keys.length / 2 ? 1 : 0),
+            },
+          ];
+        },
+      }),
       pressedKey: assign({
         players: ({ context, event }) => {
           const [self, opponent] = context.players;
@@ -194,6 +217,9 @@ export const machine = ({ code = null }: { code: string | null }) =>
           .filter((f) => f.id !== 'opponent')
           .every((player) => player.inputs.length === context.keys.length);
       },
+      isEnded: ({ context }) => {
+        return context.players.some((player) => player.score === 5);
+      },
       isHost: ({ context }) => {
         return !!context.players[0]?.host;
       },
@@ -203,8 +229,12 @@ export const machine = ({ code = null }: { code: string | null }) =>
       isMultiplayer: ({ context }) => {
         return context.type === 'multiplayer';
       },
+      hasCode: ({ context }) => {
+        return !!context.code;
+      },
     },
   }).createMachine({
+    /** @xstate-layout N4IgpgJg5mDOIC5QGMD2EDEBhA8gOTwFEsAVASXwH0AxAQTIBkBVAJUIG0AGAXUVAAdUsAJYAXYagB2fEAA9EAFgBMAGhABPRAA4AjADoArJ2MmjSgJwKdBgL421aCHoA2qAEZv1GAMqEGxEkpfEnI8AHFvLl4kEEERcSkZeQQdJX0lAGZUgy0lADZzJU4srTVNBAKlPQB2HQyFXK1OLRaDczsHdBd3T2x8ajIWAFlKBhwAIXGATSiZOLEJaRjkhQUMvRNOJSsdc3NOPLqyxCKq7b29pWrzHRbqrQ6QR26PL1w8AeHRien2HWiBEIFollic8pxDHklAZ6kpdM0MscEFo2hsMnlVgprhiDHVHs80JJJGBkOJJFA+gQAhQ8EEmFgsIRvJEeHMgQklqBkgZVBpEDpOEY9PkLOZaqtcvd8V1CcTScJyZSiKQaZRCCwWDgWLMYvMOUlFGsNiZtjpdvtDoi+QhoVVqgoLtVquixQ97E8ulAAIYAWzAPhItBITBZANi7MWBpS1nWxTqGS2cLFqSR1U41RqDr2CjyPIMBgx0qc3r9elgYGcJNEPkIgQACgxaFN1TrAfFI6CEOYeXoMemdFDbuZDkixeYaloMastjCFG0i3oS2AyxWq5TPiNfP4VfhW+H2yCufyBesstDuxkitctNUkSf9ILzJP7QY56tbO7nku9PwvQBXctMD3PUOyPaMbhqeoHW2BQDknO8in0Z1uzWKE7kyBdv34ZwvXUBUKQAaUIKY6zYZlgIjQ85EQcEDA2e5bk4PZ02UcwEIxYUB2aGFoU4HRqkw31l2w3D8IwCiD05aiEHtLQ9AaVYMi0DJzHRNoDDvB08kMFF9h5VJnQyQTSxEvDFT+MMQKo5JZPkrRFOU1Tc27O9LwhTIUIyaoMX42pjOXAAnOA-2casyMDFgSAk4EpOSM1ij0M91Lc69b2tHQGgzG5CgTZ1OCsFp-L0ILYBC6sAAkcCGDhWV1SjYrBCEC2hWF4WUpEMQzc49kOSxvIEx5JHQOAZEcNlJKjABaPIkWm41NgW4w4QXVxXnGmKoyxJFcghM0xThBplLPBdZSrfD1v1TtlCRNIM2qIxjCaLzhzaN1OmLISLtA6T8wzdNdCaZj7QsVMURqOM6i0G57hzIry0rUkvusxBXT0Ro0isLTBTS8oBSaSDuzyS8cXtHQit-ADICRhqUgyHJEvu1ImJhpiNOtG91iKLI6ksK8b3JnCzKgamoyhdY1nugx7QdA5VNc3M9AHQp8oLZQ5yKkqypFzsnwhWp0UvOoeSuUp0odBQ0bpm8bgBqc7DsIA */
     id: 'cod',
     context: {
       code,
@@ -216,8 +246,21 @@ export const machine = ({ code = null }: { code: string | null }) =>
       players: [],
       startAt: new Date().getTime(),
     },
-    initial: code ? 'connecting' : 'lobby',
+    initial: 'loading',
     states: {
+      loading: {
+        after: {
+          1500: [
+            {
+              target: '#cod.connecting',
+              guard: 'hasCode',
+            },
+            {
+              target: '#cod.lobby',
+            },
+          ],
+        },
+      },
       lobby: {
         entry: ['resetSettings'],
         on: {
@@ -274,25 +317,20 @@ export const machine = ({ code = null }: { code: string | null }) =>
             },
           },
           playing: {
-            always: {
-              target: '#cod.game.result',
-              guard: 'isCompleted',
-            },
+            always: [
+              {
+                target: '#cod.result',
+                guard: 'isEnded',
+              },
+              {
+                target: '#cod.game.paused',
+                guard: 'isCompleted',
+                actions: ['setScore', 'setTime', 'setKeys'],
+              },
+            ],
             on: {
               KEYPRESS: {
                 actions: ['pressedKey'],
-              },
-            },
-          },
-          result: {
-            on: {
-              RESTART: {
-                target: '#cod.game.paused',
-                guard: 'isHost',
-              },
-              HOME: {
-                target: '#cod.lobby',
-                guard: 'isHost',
               },
             },
           },
@@ -300,6 +338,18 @@ export const machine = ({ code = null }: { code: string | null }) =>
         on: {
           STATUS: {
             actions: ['wsStatus'],
+          },
+        },
+      },
+      result: {
+        on: {
+          RESTART: {
+            target: '#cod.game.paused',
+            guard: 'isHost',
+          },
+          HOME: {
+            target: '#cod.lobby',
+            guard: 'isHost',
           },
         },
       },
