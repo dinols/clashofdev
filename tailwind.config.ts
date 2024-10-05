@@ -11,7 +11,7 @@ export default {
           "radial-gradient(50% 50% at 50% 50%, #B3B3B4 0%, #F3F3F1 100%)",
       },
       boxShadow: {
-        "inner-key": "0px -3px 4px 0px rgba(136, 136, 136, 0.48) inset",
+        "inner-key": "0px -3px 4px 0px rgba(136, 136, 136, 0.25) inset",
         glow: "0px 4px 20px 0px rgba(255, 255, 255, 0.25)",
       },
       fontSize: {

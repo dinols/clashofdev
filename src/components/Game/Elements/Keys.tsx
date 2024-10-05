@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Key } from "#/components/Game/Elements";
+import Key from "#/components/Game/Elements/Key";
 
 const Keys: React.FC = () => {
   return (

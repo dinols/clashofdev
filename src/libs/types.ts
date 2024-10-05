@@ -33,7 +33,6 @@ export type Player = {
   id: string;
   name: string;
   character: string;
-  score: number;
   inputs: string[];
   host?: boolean;
   completedAt?: number;
@@ -42,9 +41,10 @@ export type Player = {
 export type MachineContext = {
   // App
   socket: WebSocket | null;
-  code: string | null;
   error: string | null;
   // Game settings
+  code: string | null;
+  playerId: string;
   type: GameType;
   mode: GameMode;
   players: Player[];

@@ -23,7 +23,7 @@ const Key: React.FC<{
     <div
       ref={ref}
       className={twMerge(
-        "bg-white rounded-[10px] shadow-inner-key w-[106px] h-[106px] flex items-center justify-center text-gray relative",
+        "bg-white border border-black/5 rounded-[10px] shadow-inner-key w-[106px] h-[106px] flex items-center justify-center text-gray relative",
         type === "success" && "text-green-mid bg-green-light",
         type === "error" && "text-orange-mid bg-orange-light"
       )}

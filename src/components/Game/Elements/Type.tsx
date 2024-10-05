@@ -4,41 +4,43 @@ import { twMerge } from "tailwind-merge";
 
 import { useGameContext } from "#/components/Game/MachineContext";
 
-const Difficulty: React.FC = () => {
+const GameType: React.FC = () => {
   const { machineService } = useGameContext();
-  const mode = useSelector(machineService, (state) => state.context.mode);
+  const currentType = useSelector(
+    machineService,
+    (state) => state.context.type
+  );
 
   return (
     <div className="bg-white relative shadow-inner border-black/20 border flex items-center p-1 rounded-full w-fit">
       <div
         className={twMerge(
-          "w-20 rounded-full absolute h-7 bg-black transition-all",
-          mode === "easy" && "left-1 bg-green-mid",
-          mode === "medium" && "left-[84px] bg-purple-mid",
-          mode === "hard" && "left-[164px] bg-orange-mid"
+          "w-32 rounded-full absolute h-7 bg-black transition-all",
+          currentType === "solo" && "left-1",
+          currentType === "multiplayer" && "left-[132px]"
         )}
       ></div>
-      {["easy", "medium", "hard"].map((difficulty) => (
+      {["solo", "multiplayer"].map((type) => (
         <button
-          key={difficulty}
+          key={type}
           onClick={() =>
             machineService.send({
               type: "SELECT_SETTINGS",
               data: {
-                mode: difficulty,
+                type,
               },
             })
           }
           className={twMerge(
-            "cursor-pointer relative h-7 w-20 uppercase text-black font-semibold text-sm transition-all",
-            difficulty === mode && "text-white"
+            "cursor-pointer relative h-7 w-32 uppercase text-black font-semibold text-sm transition-all",
+            type === currentType && "text-white"
           )}
         >
-          {difficulty}
+          {type}
         </button>
       ))}
     </div>
   );
 };
 
-export default Difficulty;
+export default GameType;

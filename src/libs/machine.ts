@@ -94,40 +94,53 @@ export const machine = ({ code = null }: { code: string | null }) =>
       }),
       setCode: assign({
         code: ({ context }) => {
-          if (context.type === "solo") return null;
           return generateRandomString(6).toUpperCase();
         },
       }),
       setPlayer: assign({
         players: ({ context, event }) => {
-          const [self] = context.players;
+          if (!context.players.find((f) => f.id === context.playerId)) {
+            return [
+              ...context.players,
+              {
+                id: context.playerId,
+                name: event.data.name ?? "",
+                character: event.data.character ?? "",
+                inputs: [],
+                host: context.players.length === 0,
+              },
+            ];
+          }
 
+          return context.players.map((player) => {
+            if (player.id === context.playerId) {
+              return {
+                ...player,
+                name: event.data.name ?? player.name ?? "",
+                character: event.data.character ?? player.character ?? "",
+              };
+            }
+
+            return player;
+          });
+        },
+      }),
+      confirmLobby: assign({
+        players: ({ context }) => {
           return [
+            ...context.players,
             {
-              ...self,
-              id: self.id ?? generateRandomString(12),
-              name: event.data.name ?? self.name,
-              character: event.data.character ?? self.character,
+              id: generateRandomString(16),
+              name: "Joueur 2",
+              character: "",
+              inputs: [],
             },
-            ...context.players.slice(1),
           ];
         },
       }),
       confirmSelection: assign(({ context }) => {
-        if (context.type === "multiplayer") return context;
-        return {
-          ...context,
-          players: [
-            ...context.players,
-            {
-              id: "opponent",
-              name: "Opponent",
-              character: "boosted",
-              score: 0,
-              inputs: [],
-            },
-          ],
-        };
+        // TODO Emit to server
+        return context;
       }),
       setKeys: assign({
         keys: ({ context, event }) => {
@@ -143,29 +156,6 @@ export const machine = ({ code = null }: { code: string | null }) =>
       }),
       setTime: assign({
         startAt: new Date().getTime() + 5000,
-      }),
-      setScore: assign({
-        players: ({ context }) => {
-          if (context.type === "multiplayer") return context.players;
-
-          const [self] = context.players;
-          const total = self.inputs.reduce((acc, input, index) => {
-            return acc + (input === context.keys[index] ? 1 : 0);
-          }, 0);
-
-          return [
-            {
-              ...self,
-              score: self.score + (total > context.keys.length / 2 ? 1 : 0),
-            },
-            {
-              ...context.players[1],
-              score:
-                context.players[1].score +
-                (total <= context.keys.length / 2 ? 1 : 0),
-            },
-          ];
-        },
       }),
       pressedKey: assign({
         players: ({ context, event }) => {
@@ -200,6 +190,8 @@ export const machine = ({ code = null }: { code: string | null }) =>
         startAt: new Date().getTime(),
       }),
       wsStatus: assign({
+        playerId: ({ event, context }) =>
+          "playerId" in event.data ? event.data.playerId : context.playerId,
         type: ({ event, context }) =>
           "type" in event.data ? event.data.type : context.type,
         mode: ({ event, context }) =>
@@ -221,9 +213,6 @@ export const machine = ({ code = null }: { code: string | null }) =>
           .filter((f) => f.id !== "opponent")
           .every((player) => player.inputs.length === context.keys.length);
       },
-      isEnded: ({ context }) => {
-        return context.players.some((player) => player.score === 5);
-      },
       isHost: ({ context }) => {
         return !!context.players[0]?.host;
       },
@@ -242,6 +231,7 @@ export const machine = ({ code = null }: { code: string | null }) =>
     id: "cod",
     context: {
       code,
+      playerId: generateRandomString(16),
       error: null,
       socket: null,
       type: "solo",
@@ -274,10 +264,12 @@ export const machine = ({ code = null }: { code: string | null }) =>
           CONFIRM_LOBBY: [
             {
               target: "#cod.connecting",
+              actions: "confirmLobby",
               guard: "isMultiplayer",
             },
             {
-              target: "#cod.game.paused",
+              target: "#cod.select",
+              actions: "confirmLobby",
             },
           ],
         },
@@ -324,12 +316,7 @@ export const machine = ({ code = null }: { code: string | null }) =>
             always: [
               {
                 target: "#cod.result",
-                guard: "isEnded",
-              },
-              {
-                target: "#cod.game.paused",
                 guard: "isCompleted",
-                actions: ["setScore", "setTime", "setKeys"],
               },
             ],
             on: {
