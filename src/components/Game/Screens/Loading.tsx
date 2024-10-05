@@ -1,8 +1,8 @@
-import React from 'react';
+import React from "react";
 
 const Lobby: React.FC = () => {
   return (
-    <div>
+    <div className="h-full w-full bg-blue-mid">
       <h1>Loading</h1>
     </div>
   );

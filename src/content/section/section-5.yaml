@@ -1,9 +1,10 @@
-title: 'Le sur-boosted'
-description: '<p>Il excelle dans tous les domaines, alliant design, propreté de code, réactivité, animations fluides et créativité cachée. Un vrai prodige qui a su briller dans chaque aspect du développement.</p><br/><br/><p>Ce dev aux <strong>multitalents</strong> a reçu la standing ovation du jury.</p>'
+title: "Le sur-boosted"
+description: "<p>Il excelle dans tous les domaines, alliant design, propreté de code, réactivité, animations fluides et créativité cachée. Un vrai prodige qui a su briller dans chaque aspect du développement.</p><br/><p>Ce dev aux <strong>multitalents</strong> a reçu la standing ovation du jury.</p>"
+character: boosted
 color: orange
 category: big boss
-points: 'infinite'
-icon: 'smile'
+points: "infinite"
+icon: "smile"
 jury:
-  - 'maislina_'
-  - 'LLCoolChris_'
+  - "maislina_"
+  - "LLCoolChris_"

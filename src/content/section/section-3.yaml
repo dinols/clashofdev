@@ -1,9 +1,10 @@
-title: 'Le chercheur de breakpoint'
-description: '<p>Quelle que soit la taille de l’écran, il garantit une expérience utilisateur sans faille. Chaque site s’adapte à tous les supports, du mobile au grand écran.</p><br/><br/><p>Il fait attention à <strong>chaque breakpoint</strong> attentivement, on ne pourra pas le reprendre à l’inspection!</p>'
+title: "Le chercheur de breakpoint"
+description: "<p>Quelle que soit la taille de l’écran, il garantit une expérience utilisateur sans faille. Chaque site s’adapte à tous les supports, du mobile au grand écran.</p><br/><p>Il fait attention à <strong>chaque breakpoint</strong> attentivement, on ne pourra pas le reprendre à l’inspection!</p>"
+character: breakpoint
 color: blue
 category: responsive
-points: '2'
-icon: 'flash'
+points: "2"
+icon: "flash"
 jury:
-  - 'maislina_'
-  - 'LLCoolChris_'
+  - "maislina_"
+  - "LLCoolChris_"

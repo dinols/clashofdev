@@ -1,9 +1,10 @@
-title: 'Le maître des secrets'
-description: '<p>Derrière une ligne de code bien choisie se cache un secret bien gardé. Il glisse la surprise qui surprendra les utilisateurs les plus curieux.</p><br/><br/><p>Dev attentif aux comportements utilisateurs il saura cacher l’<strong>Easter Egg</strong> au meilleur endroit.</p>'
+title: "Le maître des secrets"
+description: "<p>Derrière une ligne de code bien choisie se cache un secret bien gardé. Il glisse la surprise qui surprendra les utilisateurs les plus curieux.</p><br/><p>Dev attentif aux comportements utilisateurs il saura cacher l’<strong>Easter Egg</strong> au meilleur endroit.</p>"
+character: secrets
 color: mustard
 category: easter egg
-points: '3'
-icon: 'toggle'
+points: "3"
+icon: "toggle"
 jury:
-  - 'maislina_'
-  - 'LLCoolChris_'
+  - "maislina_"
+  - "LLCoolChris_"

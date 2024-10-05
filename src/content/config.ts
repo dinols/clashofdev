@@ -3,6 +3,7 @@ import { z, defineCollection } from 'astro:content';
 export const sectionSchema = z.object({
   title: z.string(),
   description: z.string(),
+  character: z.string(),
   color: z.enum([
     'blue',
     'green',

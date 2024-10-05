@@ -5,10 +5,10 @@ import type { InferEntrySchema } from 'astro:content';
 import { twMerge } from 'tailwind-merge';
 
 import type { Color, Jury } from '#/libs/types';
-import Cursor from '#/components/Widgets/Cursor.astro';
-import Spin from '#/components/Animated/Spin.astro';
-import Sticker from '#/components/Widgets/Sticker.astro';
-import Magnetic from '#/components/Animated/Magnetic.astro';
+import Cursor from '#/components/Home/Widgets/Cursor.astro';
+import Spin from '#/components/Home/Animated/Spin.astro';
+import Sticker from '#/components/Home/Widgets/Sticker.astro';
+import Magnetic from '#/components/Home/Animated/Magnetic.astro';
 
 interface Props {
   data: InferEntrySchema<'section'> & {
@@ -65,12 +65,7 @@ const { data } = Astro.props;
       >
         <img
           alt={data.title}
-          src={`/sections/${data.id}.webp`}
-          class="pointer-events-none select-none object-cover object-center h-full w-1/2"
-        />
-        <img
-          alt={data.title + ' alternative'}
-          src={`/sections/${data.id}-alt.webp`}
+          src={`/sections/${data.character}.webp`}
           class="pointer-events-none select-none object-cover object-center h-full w-1/2"
         />
       </div>
@@ -92,63 +87,3 @@ const { data } = Astro.props;
     </Spin>
   </div>
 </section>
-<script>
-  import Alpine from 'alpinejs';
-  import gsap from 'gsap';
-  import { Draggable } from 'gsap/Draggable';
-
-  Alpine.data('section', () => ({
-    init() {
-      // Draggable animation
-      let velocity = 0;
-      let lastX = 0;
-      let decayFactor = 0.95;
-      let isAnimating = false;
-
-      Draggable.create(this.$refs.images, {
-        type: 'x',
-        bounds: this.$refs.images.parentElement,
-        edgeResistance: 0.9,
-        onDrag: function () {
-          velocity = this.x - lastX;
-          lastX = this.x;
-        },
-        onDragEnd: function () {
-          startMomentum(this);
-        },
-      })[0];
-
-      function startMomentum(draggable: Draggable.Vars) {
-        if (isAnimating) return;
-        isAnimating = true;
-
-        function decay() {
-          if (Math.abs(velocity) < 0.1) {
-            isAnimating = false;
-            return;
-          }
-
-          velocity *= decayFactor;
-
-          let newX = Number(gsap.getProperty(draggable.target, 'x')) + velocity;
-
-          const minX = draggable.minX;
-          const maxX = draggable.maxX;
-          if (newX < minX) {
-            newX = minX;
-            velocity = 0;
-          } else if (newX > maxX) {
-            newX = maxX;
-            velocity = 0;
-          }
-
-          gsap.set(draggable.target, { x: newX });
-
-          requestAnimationFrame(decay);
-        }
-
-        decay();
-      }
-    },
-  }));
-</script>

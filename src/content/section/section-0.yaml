@@ -1,8 +1,9 @@
 title: "L'artiste de renom"
-description: '<p><strong>Le design</strong>, c’est son terrain de jeu. Il maîtrise et retranscrit correctement chaque pixel de la maquette.</p><br/><br/><p>Virtuose des couleurs il ne se trompe jamais de code HEX, de spacing ou de border-radius ; <strong>Figma n’a aucun secret pour ce Dev de talent.</strong></p>'
+description: "<p><strong>Le design</strong>, c’est son terrain de jeu. Il maîtrise et retranscrit correctement chaque pixel de la maquette.</p><br/><p>Virtuose des couleurs il ne se trompe jamais de code HEX, de spacing ou de border-radius ; <strong>Figma n’a aucun secret pour ce Dev de talent.</strong></p>"
+character: artist
 color: purple
 category: design
-points: '6'
-icon: 'cursor'
+points: "6"
+icon: "cursor"
 jury:
-  - 'maislina_'
+  - "maislina_"

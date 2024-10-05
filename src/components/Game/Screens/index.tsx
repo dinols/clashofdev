@@ -10,10 +10,13 @@ import Lobby from '#/components/Game/Screens/Lobby';
 import Loading from '#/components/Game/Screens/Loading';
 import Game from '#/components/Game/Screens/Game';
 import Result from '#/components/Game/Screens/Result';
+import Select from '#/components/Game/Screens/Select';
 
 const components: Record<string, React.FC> = {
   loading: Loading,
   lobby: Lobby,
+  connecting: Lobby,
+  select: Select,
   game: Game,
   result: Result,
 };
@@ -30,7 +33,6 @@ const Screens = () => {
         key={value}
         timeout={500}
         onEnter={(node: Element) => {
-          console.log(node);
           gsap.set(node, { autoAlpha: 0, scale: 0.8, xPercent: -100 });
           gsap
             .timeline({

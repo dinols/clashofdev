@@ -1,8 +1,8 @@
 const config = {
-  plugins: ['prettier-plugin-astro'],
+  plugins: ["prettier-plugin-astro"],
   semi: true,
   singleQuote: true,
-  trailingComma: 'es5',
+  trailingComma: "es5",
   tabWidth: 2,
   printWidth: 80,
 };
