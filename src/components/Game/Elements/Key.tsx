@@ -4,12 +4,13 @@ import gsap from "gsap";
 
 const Key: React.FC<{
   character: string;
-  type?: "success" | "error";
-}> = ({ type, character }) => {
+  error?: boolean;
+  success?: boolean;
+}> = ({ error, success, character }) => {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (type === "success") {
+    if (success) {
       gsap.to(ref.current?.querySelector("svg:last-child")!, {
         scale: 1,
         opacity: 1,
@@ -17,15 +18,15 @@ const Key: React.FC<{
         ease: "elastic.out(1, 0.3)",
       });
     }
-  }, [type]);
+  }, [success]);
 
   return (
     <div
       ref={ref}
       className={twMerge(
         "bg-white border border-black/5 rounded-[10px] shadow-inner-key w-[106px] h-[106px] flex items-center justify-center text-gray relative",
-        type === "success" && "text-green-mid bg-green-light",
-        type === "error" && "text-orange-mid bg-orange-light"
+        success && "text-green-mid bg-green-light",
+        error && "text-orange-mid bg-orange-light"
       )}
     >
       {character.startsWith("Arrow") ? (
@@ -95,9 +96,9 @@ const Key: React.FC<{
           </defs>
         </svg>
       ) : (
-        <span className="text-3xl">{character}</span>
+        <span className="text-3xl uppercase font-semibold">{character}</span>
       )}
-      {type === "success" && (
+      {success && (
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="145"

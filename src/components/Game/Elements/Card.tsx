@@ -52,7 +52,10 @@ const Card: React.FC<{
       </div>
       <div className="w-full aspect-[14/9] relative overflow-hidden rounded-xl">
         <img
-          className="absolute h-full w-full top-0 left-0 object-cover object-center"
+          className={twMerge(
+            "absolute h-full w-full top-0 left-0 object-cover object-center",
+            active && "animate-pulse"
+          )}
           src={`/sections/${data.character}.webp`}
         />
       </div>

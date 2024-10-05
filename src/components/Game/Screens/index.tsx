@@ -1,16 +1,16 @@
-import React from 'react';
-import { Transition, SwitchTransition } from 'react-transition-group';
-import { useSelector } from '@xstate/react';
-import gsap from 'gsap';
+import React from "react";
+import { Transition, SwitchTransition } from "react-transition-group";
+import { useSelector } from "@xstate/react";
+import gsap from "gsap";
 
-import { extractStateValue } from '#/libs/utils';
-import { useGameContext } from '#/components/Game/MachineContext';
+import { extractStateValue } from "#/libs/utils";
+import { useGameContext } from "#/components/Game/MachineContext";
 
-import Lobby from '#/components/Game/Screens/Lobby';
-import Loading from '#/components/Game/Screens/Loading';
-import Game from '#/components/Game/Screens/Game';
-import Result from '#/components/Game/Screens/Result';
-import Select from '#/components/Game/Screens/Select';
+import Lobby from "#/components/Game/Screens/Lobby";
+import Loading from "#/components/Game/Screens/Loading";
+import Game from "#/components/Game/Screens/Game";
+import Result from "#/components/Game/Screens/Result";
+import Select from "#/components/Game/Screens/Select";
 
 const components: Record<string, React.FC> = {
   loading: Loading,
@@ -33,7 +33,7 @@ const Screens = () => {
         key={value}
         timeout={500}
         onEnter={(node: Element) => {
-          gsap.set(node, { autoAlpha: 0, scale: 0.8, xPercent: -100 });
+          gsap.set(node, { autoAlpha: 0, scale: 0.9, xPercent: -100 });
           gsap
             .timeline({
               paused: true,
@@ -45,7 +45,7 @@ const Screens = () => {
         onExit={(node) => {
           gsap
             .timeline({ paused: true })
-            .to(node, { scale: 0.8, duration: 0.4 })
+            .to(node, { scale: 0.9, duration: 0.4 })
             .to(node, { xPercent: 100, autoAlpha: 0, duration: 0.4 })
             .play();
         }}

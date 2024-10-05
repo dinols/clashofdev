@@ -9,17 +9,20 @@ export const generateRandomString = (length: number): string => {
 };
 
 export const modeKeysDefinition = {
-  hard: 16,
-  medium: 14,
+  hard: 24,
+  medium: 16,
   easy: 10,
 };
 
-export const generateKeys = (mode: GameMode): string[] => {
-  const alphabet = Array.from({ length: 26 }, (_, i) =>
-    String.fromCharCode(97 + i)
-  );
+const alphabet = Array.from({ length: 26 }, (_, i) =>
+  String.fromCharCode(97 + i)
+);
+const keys = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"];
+export const allKeys = [...keys, ...alphabet];
 
-  const keys = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"];
+export const generateKeys = (mode: GameMode): string[] => {
+  const length = modeKeysDefinition[mode];
+
   // Add some letters to the keys if the mode is not easy
   if (mode !== "easy") {
     keys.push(
@@ -28,8 +31,7 @@ export const generateKeys = (mode: GameMode): string[] => {
         .slice(0, mode === "hard" ? alphabet.length : 2)
     );
   }
-
-  return Array.from({ length }, () => {
+  return Array.from({ length }).map(() => {
     const randomIndex = Math.floor(Math.random() * keys.length);
     return keys[randomIndex];
   });

@@ -16,7 +16,7 @@ const Lobby: React.FC = () => {
 
   return (
     <div className="h-full w-full bg-transparent">
-      <div className="container mx-auto h-full px-4 xs:px-8 py-10 lg:py-5 flex flex-col items-center justify-between">
+      <div className="container mx-auto h-full px-4 xs:px-8 py-8 flex flex-col items-center justify-between">
         <h1 className="font-bold text-beige text-xs">CLASH TIME!</h1>
         <div className="w-[1024px] py-12 px-16 flex flex-col gap-8 bg-beige rounded-[60px] relative">
           <div className="flex items-center justify-between">
@@ -35,7 +35,7 @@ const Lobby: React.FC = () => {
             <span>Clash</span>
             {mode !== "easy" && (
               <div className="absolute top-2 left-[400px] transform -rotate-[0deg]">
-                <Key character="B" />
+                <Key character="D" />
               </div>
             )}
             <div className="absolute top-24 left-[420px] transform -rotate-[20deg]">
@@ -64,7 +64,7 @@ const Lobby: React.FC = () => {
           {type === "multiplayer" ? (
             <div className="opacity-80 text-black font-medium w-[420px]">
               Fais le <b>plus haut score</b> à temps pour vaincre{" "}
-              <b>ton adversaire</b>
+              <b>ton adversaire</b>.
               <br />
               <br />
               <br />
@@ -85,7 +85,7 @@ const Lobby: React.FC = () => {
           </div>
           {type === "multiplayer" && (
             <div className="absolute w-fit h-fit right-24 bottom-0">
-              <Player character="boosted" />
+              <Player character="secrets" />
             </div>
           )}
         </div>

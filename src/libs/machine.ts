@@ -130,9 +130,10 @@ export const machine = ({ code = null }: { code: string | null }) =>
           return [
             ...context.players,
             {
-              id: generateRandomString(16),
+              id:
+                context.type === "solo" ? "opponent" : generateRandomString(16),
+              character: context.type === "solo" ? "boosted" : "",
               name: "Joueur 2",
-              character: "",
               inputs: [],
             },
           ];
@@ -155,31 +156,30 @@ export const machine = ({ code = null }: { code: string | null }) =>
         },
       }),
       setTime: assign({
-        startAt: new Date().getTime() + 5000,
+        startAt: new Date().getTime(),
       }),
       pressedKey: assign({
         players: ({ context, event }) => {
-          const [self, opponent] = context.players;
+          return context.players.map((player) => {
+            if (player.id === context.playerId) {
+              if (player.inputs.length === context.keys.length) return player;
 
-          // TODO Emit health loss, do not append if incorrect
+              const isCorrect =
+                event.data.key.toLowerCase() ===
+                context.keys[player.inputs.length].toLowerCase();
+              if (!isCorrect) {
+                // TODO If multi, emit to server
+                window.dispatchEvent(new CustomEvent(`${player.id}-error`));
+              }
 
-          if (event.data.opponent) {
-            return [
-              self,
-              {
-                ...opponent,
-                inputs: [...opponent.inputs, event.data.key],
-              },
-            ];
-          }
+              return {
+                ...player,
+                inputs: [...player.inputs, event.data.key],
+              };
+            }
 
-          return [
-            {
-              ...self,
-              inputs: [...self.inputs, event.data.key],
-            },
-            opponent,
-          ];
+            return player;
+          });
         },
       }),
       resetSettings: assign({
@@ -209,9 +209,11 @@ export const machine = ({ code = null }: { code: string | null }) =>
         return new Date().getTime() > context.startAt;
       },
       isCompleted: ({ context }) => {
-        return context.players
-          .filter((f) => f.id !== "opponent")
-          .every((player) => player.inputs.length === context.keys.length);
+        return context.players.every(
+          (player) =>
+            player.inputs.length > 0 &&
+            player.inputs.length === context.keys.length
+        );
       },
       isHost: ({ context }) => {
         return !!context.players[0]?.host;
@@ -299,7 +301,7 @@ export const machine = ({ code = null }: { code: string | null }) =>
           },
           CONFIRM_SELECTION: {
             target: "#cod.game.paused",
-            actions: ["confirmSelection", "setKeys", "setTime"],
+            actions: ["confirmSelection", "setKeys"],
           },
         },
       },
@@ -307,12 +309,15 @@ export const machine = ({ code = null }: { code: string | null }) =>
         initial: "paused",
         states: {
           paused: {
-            always: {
-              target: "#cod.game.playing",
-              guard: "isStarted",
+            after: {
+              5000: {
+                target: "#cod.game.playing",
+                guard: "isStarted",
+              },
             },
           },
           playing: {
+            entry: ["setTime"],
             always: [
               {
                 target: "#cod.result",

@@ -1,5 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import gsap from "gsap";
+import { useSelector } from "@xstate/react";
+
+import { useGameContext } from "#/components/Game/MachineContext";
 
 const Player: React.FC<{
   id?: string;
@@ -8,6 +11,9 @@ const Player: React.FC<{
 }> = ({ id, character, username }) => {
   const ref = useRef<HTMLDivElement>(null);
   const [animationComplete, setAnimationComplete] = useState(true);
+
+  const { machineService } = useGameContext();
+  const type = useSelector(machineService, (state) => state.context.type);
 
   useEffect(() => {
     if (!id) return;
@@ -47,14 +53,14 @@ const Player: React.FC<{
 
   return (
     <div className="relative flex flex-col items-center w-fit">
-      {username && (
+      {type === "multiplayer" && (
         <div className="bg-beige text-black text-xs font-bold py-2 px-4 rounded-2xl">
           {username}
         </div>
       )}
       <div
         ref={ref}
-        className="relative h-96 w-96 flex items-center justify-center"
+        className="relative h-[420px] w-[420px] flex items-center justify-center"
       >
         <img
           src={`/game/${character}.webp`}

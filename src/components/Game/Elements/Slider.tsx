@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
+import { useSelector } from "@xstate/react";
 import Swiper from "swiper";
 import { EffectCoverflow } from "swiper/modules";
 
@@ -6,7 +7,8 @@ import { useGameContext } from "#/components/Game/MachineContext";
 import Card from "#/components/Game/Elements/Card";
 
 const Slider: React.FC = () => {
-  const { sections } = useGameContext();
+  const { sections, machineService } = useGameContext();
+  const type = useSelector(machineService, (state) => state.context.type);
   const [activeIndex, setActiveIndex] = useState(0);
   const swiper = useRef<HTMLDivElement>(null);
 
@@ -20,6 +22,7 @@ const Slider: React.FC = () => {
         centeredSlides: true,
         slidesPerView: "auto",
         loopAdditionalSlides: 3,
+        slideToClickedSlide: true,
         coverflowEffect: {
           rotate: -5,
           stretch: 0,
@@ -45,17 +48,24 @@ const Slider: React.FC = () => {
           "linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1) 20%, rgba(0, 0, 0, 1) 80%, rgba(0, 0, 0, 0))",
       }}
       ref={swiper}
-      className="swiper !w-[1536px] h-full"
+      className="swiper w-full h-full"
     >
       <div className="swiper-wrapper">
-        {[...sections, ...sections].map((section, index) => (
-          <div
-            key={index}
-            className="swiper-slide !w-fit !bg-transparent !flex items-center justify-center"
-          >
-            <Card data={section} active={activeIndex === index} />
-          </div>
-        ))}
+        {[...sections, ...sections]
+          .filter((f) => {
+            if (type === "solo") {
+              return f.character !== "boosted";
+            }
+            return f;
+          })
+          .map((section, index) => (
+            <div
+              key={index}
+              className="swiper-slide !w-fit !bg-transparent !flex items-center justify-center"
+            >
+              <Card data={section} active={activeIndex === index} />
+            </div>
+          ))}
       </div>
     </div>
   );
