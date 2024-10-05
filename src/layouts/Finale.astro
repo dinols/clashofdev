@@ -5,8 +5,7 @@ import 'swiper/css';
 import 'swiper/css/effect-coverflow';
 
 import Header from '#/components/Global/Header.astro';
-import Cursor from '#/components/Home/Widgets/Cursor.astro';
-import { Color, Jury } from '#/libs/types';
+import Cursor from '#/components/Global/Elements/Cursor';
 
 interface Props {
   title?: string;
@@ -28,8 +27,7 @@ const { title = 'Clash of Dev — La finale' } = Astro.props;
   >
     <Cursor
       follower
-      color={Object.values(Color)[0]}
-      name={Object.values(Jury)[0]}
+      client:load
     />
     <Header tag="LA FINALE" hidePercentage />
     <slot />

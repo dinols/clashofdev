@@ -19,6 +19,7 @@ const Slider: React.FC = () => {
         loop: true,
         centeredSlides: true,
         slidesPerView: "auto",
+        loopAdditionalSlides: 3,
         coverflowEffect: {
           rotate: -5,
           stretch: 0,
@@ -39,9 +40,9 @@ const Slider: React.FC = () => {
     <div
       style={{
         maskImage:
-          "linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1) 15%, rgba(0, 0, 0, 1) 85%, rgba(0, 0, 0, 0))",
+          "linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1) 20%, rgba(0, 0, 0, 1) 80%, rgba(0, 0, 0, 0))",
         WebkitMaskImage:
-          "linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1) 15%, rgba(0, 0, 0, 1) 85%, rgba(0, 0, 0, 0))",
+          "linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1) 20%, rgba(0, 0, 0, 1) 80%, rgba(0, 0, 0, 0))",
       }}
       ref={swiper}
       className="swiper !w-[1536px] h-full"

@@ -4,8 +4,7 @@ import 'lenis/dist/lenis.css';
 
 import Header from '#/components/Global/Header.astro';
 import Footer from '#/components/Global/Footer.astro';
-import Cursor from '#/components/Home/Widgets/Cursor.astro';
-import { Color, Jury } from '#/libs/types';
+import Cursor from '#/components/Global/Elements/Cursor';
 
 interface Props {
   title?: string;
@@ -27,8 +26,7 @@ const { title = 'Clash of Dev — La piscine' } = Astro.props;
   >
     <Cursor
       follower
-      color={Object.values(Color)[0]}
-      name={Object.values(Jury)[0]}
+      client:load
     />
     <Header />
     <slot />

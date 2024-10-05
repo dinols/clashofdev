@@ -37,6 +37,7 @@
     "xstate": "^5.18.2"
   },
   "devDependencies": {
+    "@svgr/rollup": "^8.1.0",
     "@types/canvas-confetti": "^1.6.4",
     "@types/react-transition-group": "^4.4.11",
     "prettier": "^3.3.3",

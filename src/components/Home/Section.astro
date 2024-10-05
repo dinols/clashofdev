@@ -1,17 +1,17 @@
 ---
 // This component is used to display a section of the website.
 
-import type { InferEntrySchema } from 'astro:content';
 import { twMerge } from 'tailwind-merge';
 
+import type { Section } from '#/content/config';
 import type { Color, Jury } from '#/libs/types';
-import Cursor from '#/components/Home/Widgets/Cursor.astro';
+import Cursor from '#/components/Global/Elements/Cursor';
 import Spin from '#/components/Home/Animated/Spin.astro';
-import Sticker from '#/components/Home/Widgets/Sticker.astro';
+import Sticker from '#/components/Global/Elements/Sticker';
 import Magnetic from '#/components/Home/Animated/Magnetic.astro';
 
 interface Props {
-  data: InferEntrySchema<'section'> & {
+  data: Section & {
     id: string;
   };
 }

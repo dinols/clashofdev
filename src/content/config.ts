@@ -1,25 +1,25 @@
-import { z, defineCollection } from 'astro:content';
+import { z, defineCollection } from "astro:content";
 
 export const sectionSchema = z.object({
   title: z.string(),
   description: z.string(),
   character: z.string(),
   color: z.enum([
-    'blue',
-    'green',
-    'mustard',
-    'orange',
-    'pink',
-    'purple',
+    "blue",
+    "green",
+    "mustard",
+    "orange",
+    "pink",
+    "purple",
   ] as const),
-  icon: z.string().optional(),
+  icon: z.string(),
   category: z.string(),
   points: z.string(),
   jury: z.array(z.string()),
 });
 
 const sectionCollection = defineCollection({
-  type: 'data',
+  type: "data",
   schema: sectionSchema,
 });
 

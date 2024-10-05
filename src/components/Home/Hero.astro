@@ -1,13 +1,13 @@
 ---
 // This component is used to display the hero of the website.
 
-import { Color, Jury } from '#/libs/types';
+import { Jury, Color } from '#/libs/types';
 
-import Marquee from '#/components/Home/Widgets/Marquee.astro';
-import Sticker from '#/components/Home/Widgets/Sticker.astro';
+import Marquee from '#/components/Home/Elements/Marquee.astro';
+import Sticker from '#/components/Global/Elements/Sticker';
 import Magnetic from '#/components/Home/Animated/Magnetic.astro';
-import Card from '#/components/Home/Widgets/Card.astro';
-import Cursor from '#/components/Home/Widgets/Cursor.astro';
+import Card from '#/components/Home/Elements/Card.astro';
+import Cursor from '#/components/Global/Elements/Cursor';
 ---
 
 <section
@@ -52,22 +52,30 @@ import Cursor from '#/components/Home/Widgets/Cursor.astro';
     </div>
     <div class="w-fit relative mx-auto lg:mx-12 xl:mx-20">
       <Card icon="/crown.svg" hasSticker />
-      <Cursor
-        class="absolute bottom-40 -right-8"
-        color={Color.orange}
-        name={Jury.maislina_}
-      />
-      <Cursor
-        class="absolute bottom-2 -right-4"
-        color={Color.blue}
-        name={Jury.LLCoolChris_}
-      />
-      <Cursor
-        class="absolute bottom-2 -left-4"
-        side="right"
-        color={Color.pink}
-        name={Jury.sometimecrea}
-      />
+
+      
+
+      <div class="absolute bottom-2 -right-4">
+        <Cursor
+          name={Jury.LLCoolChris_}
+        />
+        
+      </div>
+
+      <div class="absolute bottom-2 -left-4">
+        <Cursor
+          side="right"
+          name={Jury.sometimecrea}
+        />
+      </div>
+      <div class="absolute bottom-40 -right-8">
+        <Cursor
+          name={Jury.maislina_}
+        />
+      </div>
+      
+      
+      
     </div>
   </div>
   <Marquee

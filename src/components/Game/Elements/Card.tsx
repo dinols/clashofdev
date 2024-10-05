@@ -1,13 +1,27 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { twMerge } from "tailwind-merge";
 
 import type { Section } from "#/content/config";
 import { useGameContext } from "#/components/Game/MachineContext";
+import Sticker from "#/components/Global/Elements/Sticker";
 
 const Card: React.FC<{
   data: Section;
   active: boolean;
 }> = ({ data, active = false }) => {
+  const { machineService } = useGameContext();
+
+  useEffect(() => {
+    if (active) {
+      machineService.send({
+        type: "SET_PLAYER",
+        data: {
+          character: data.character,
+        },
+      });
+    }
+  }, [active]);
+
   return (
     <div
       className={twMerge(
@@ -23,8 +37,8 @@ const Card: React.FC<{
     >
       <div
         className={twMerge(
-          "absolute top-0 left-0 h-full w-full bg-black opacity-30 pointer-events-none transition-all",
-          active && "opacity-0"
+          "absolute z-10 top-0 left-0 h-full w-full bg-black opacity-10 dark:opacity-30 pointer-events-none transition-all",
+          active && "opacity-0 dark:opacity-0"
         )}
       ></div>
       <div className="flex items-start gap-6">
@@ -46,7 +60,14 @@ const Card: React.FC<{
         className="w-full opacity-60 dark:opacity-80 text-xs text-black leading-relaxed"
         dangerouslySetInnerHTML={{ __html: data.description }}
       />
-      {/* {JSON.stringify(data)} */}
+      <div
+        className={twMerge(
+          "w-fit h-fit flex-none absolute -bottom-4 -right-4",
+          active && "animate-pulse"
+        )}
+      >
+        <Sticker className="h-32 w-32" color={data.color} name={data.icon} />
+      </div>
     </div>
   );
 };

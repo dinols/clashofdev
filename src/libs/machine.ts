@@ -106,8 +106,8 @@ export const machine = ({ code = null }: { code: string | null }) =>
             {
               ...self,
               id: self.id ?? generateRandomString(12),
-              name: event.data.name,
-              character: event.data.character,
+              name: event.data.name ?? self.name,
+              character: event.data.character ?? self.character,
             },
             ...context.players.slice(1),
           ];
