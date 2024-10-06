@@ -36,6 +36,7 @@ export type Player = {
   inputs: string[];
   winner?: boolean;
   host?: boolean;
+  score?: number;
   completedAt?: number;
 };
 

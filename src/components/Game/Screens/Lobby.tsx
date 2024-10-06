@@ -8,6 +8,7 @@ import Type from "#/components/Game/Elements/Type";
 import Key from "#/components/Game/Elements/Key";
 import Player from "#/components/Game/Elements/Player";
 import Button from "#/components/Game/Elements/Button";
+import Details from "#/components/Game/Elements/Details";
 
 const Lobby: React.FC = () => {
   const { machineService } = useGameContext();
@@ -15,7 +16,8 @@ const Lobby: React.FC = () => {
   const type = useSelector(machineService, (state) => state.context.type);
 
   return (
-    <div className="h-full w-full bg-transparent">
+    <div className="h-full w-full bg-transparent relative">
+      <Details />
       <div className="container mx-auto h-full px-4 xs:px-8 py-8 flex flex-col items-center justify-between">
         <span className="font-bold text-beige text-xs">CLASH TIME!</span>
         <div className="w-[1024px] py-12 px-16 flex flex-col gap-8 bg-beige rounded-[60px] relative">

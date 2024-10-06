@@ -7,6 +7,7 @@ import Timer from "#/components/Game/Elements/Timer";
 
 const Score: React.FC = () => {
   const { machineService } = useGameContext();
+  const mode = useSelector(machineService, (state) => state.context.mode);
   const type = useSelector(machineService, (state) => state.context.type);
   const keys = useSelector(machineService, (state) => state.context.keys);
   const inputs = useSelector(machineService, (state) =>
@@ -68,7 +69,9 @@ const Score: React.FC = () => {
           src="/game/swords.webp"
           className="h-16 w-16 object-contain object-center"
         />
-        {isStarted && <Timer initialTime={30} className="text-4xl" />}
+        {isStarted && (
+          <Timer initialTime={mode === "hard" ? 10 : 30} className="text-4xl" />
+        )}
       </div>
       <div className="flex-row-reverse flex items-center gap-x-8 gap-y-4 flex-wrap justify-end w-[420px]">
         {Array.from({ length: keys.length / 2 }).map((_, index) => (

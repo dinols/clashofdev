@@ -15,9 +15,9 @@ const GameType: React.FC = () => {
     <div className="bg-white relative shadow-inner border-black/20 border flex items-center p-1 rounded-full w-fit">
       <div
         className={twMerge(
-          "w-32 rounded-full absolute h-7 bg-black transition-all",
+          "w-20 rounded-full absolute h-7 bg-black transition-all",
           currentType === "solo" && "left-1",
-          currentType === "multiplayer" && "left-[132px]"
+          currentType === "multiplayer" && "left-[84px]"
         )}
       ></div>
       {["solo", "multiplayer"].map((type) => (
@@ -32,11 +32,11 @@ const GameType: React.FC = () => {
             })
           }
           className={twMerge(
-            "cursor-pointer relative h-7 w-32 uppercase text-black font-semibold text-sm transition-all",
+            "cursor-pointer relative h-7 w-20 uppercase text-black font-semibold text-sm transition-all",
             type === currentType && "text-white"
           )}
         >
-          {type}
+          {type.slice(0, 5)}
         </button>
       ))}
     </div>

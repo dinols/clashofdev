@@ -7,18 +7,21 @@ const connectToWebsocket = fromCallback<
   EventObject,
   {
     code: string;
+    playerId: string;
   }
 >(({ input, sendBack }) => {
-  const { code } = input;
+  const { code, playerId } = input;
 
   const socket = new WebSocket(
-    `${import.meta.env.PUBLIC_WS_URL!}/room/${code}`
+    `${import.meta.env.PUBLIC_WS_URL!}/room?gameId=${code}&playerId=${playerId}`
   );
 
   socket.onopen = () => {
     sendBack({
       type: "CONNECTION_SUCCESS",
-      socket,
+      data: {
+        socket,
+      },
     });
   };
 
@@ -92,11 +95,6 @@ export const machine = ({ code = null }: { code: string | null }) =>
         mode: ({ event, context }) =>
           "mode" in event.data ? event.data.mode : context.mode,
       }),
-      setCode: assign({
-        code: ({ context }) => {
-          return generateRandomString(6).toUpperCase();
-        },
-      }),
       setPlayer: assign({
         players: ({ context, event }) => {
           if (!context.players.find((f) => f.id === context.playerId)) {
@@ -144,9 +142,20 @@ export const machine = ({ code = null }: { code: string | null }) =>
             },
           ];
         },
+        code: ({ context }) => {
+          const code = generateRandomString(6).toUpperCase();
+          if (context.type === "multiplayer") {
+            fetch(
+              `${import.meta.env.PUBLIC_WS_URL!}/create-game?gameId=${code}&playerId=${context.playerId}&mode=${context.mode}`,
+              {
+                method: "POST",
+              }
+            );
+          }
+          return code;
+        },
       }),
       confirmSelection: assign(({ context }) => {
-        // TODO Emit to server
         return context;
       }),
       setKeys: assign({
@@ -176,11 +185,15 @@ export const machine = ({ code = null }: { code: string | null }) =>
               if (!isCorrect) {
                 // TODO If multi, emit to server
                 window.dispatchEvent(new CustomEvent(`${player.id}-error`));
+              } else {
+                window.dispatchEvent(new CustomEvent(`opponent-error`));
               }
 
               return {
                 ...player,
                 inputs: [...player.inputs, event.data.key],
+                winner: false,
+                score: 0,
               };
             }
 
@@ -264,13 +277,24 @@ export const machine = ({ code = null }: { code: string | null }) =>
         return !!context.players[0]?.host;
       },
       playersSelected: ({ context }) => {
-        return context.players.every((player) => player.character);
+        return context.players
+          .filter((f) => f.id !== "opponent")
+          .every((player) => player.character);
       },
       isMultiplayer: ({ context }) => {
         return context.type === "multiplayer";
       },
       hasCode: ({ context }) => {
         return !!context.code;
+      },
+    },
+    delays: {
+      timeout: ({ context }) => {
+        if (context.mode === "hard") {
+          return 10000;
+        }
+
+        return 30000;
       },
     },
   }).createMachine({
@@ -306,7 +330,7 @@ export const machine = ({ code = null }: { code: string | null }) =>
         entry: ["resetSettings"],
         on: {
           SELECT_SETTINGS: {
-            actions: ["selectSettings", "setCode"],
+            actions: ["selectSettings"],
           },
           CONFIRM_LOBBY: [
             {
@@ -325,7 +349,10 @@ export const machine = ({ code = null }: { code: string | null }) =>
         invoke: {
           id: "connectToWebsocket",
           src: "connectToWebsocket",
-          input: ({ context: { code } }) => ({ code: code! }),
+          input: ({ context: { code, playerId } }) => ({
+            code: code!,
+            playerId,
+          }),
         },
         on: {
           CONNECTION_SUCCESS: {
@@ -347,6 +374,7 @@ export const machine = ({ code = null }: { code: string | null }) =>
           CONFIRM_SELECTION: {
             target: "#cod.game.paused",
             actions: ["confirmSelection", "setKeys"],
+            guard: "playersSelected",
           },
         },
       },
@@ -364,7 +392,7 @@ export const machine = ({ code = null }: { code: string | null }) =>
           playing: {
             entry: ["setTime"],
             after: {
-              30000: {
+              timeout: {
                 target: "#cod.result",
               },
             },

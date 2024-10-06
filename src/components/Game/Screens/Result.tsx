@@ -1,13 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector } from "@xstate/react";
+import confetti from "canvas-confetti";
 
-import { modeKeysDefinition } from "#/libs/utils";
 import { useGameContext } from "#/components/Game/MachineContext";
-import Difficulty from "#/components/Game/Elements/Difficulty";
-import Type from "#/components/Game/Elements/Type";
-import Key from "#/components/Game/Elements/Key";
 import Player from "#/components/Game/Elements/Player";
 import Button from "#/components/Game/Elements/Button";
+import Details from "#/components/Game/Elements/Details";
 
 const Result: React.FC = () => {
   const { machineService } = useGameContext();
@@ -26,8 +24,46 @@ const Result: React.FC = () => {
       )!
   );
 
+  useEffect(() => {
+    if (self.winner) {
+      setTimeout(() => {
+        const fire = (particleRatio: number, opts: confetti.Options) => {
+          confetti({
+            origin: { y: 0.7 },
+            ...opts,
+            particleCount: Math.floor(200 * particleRatio),
+          });
+        };
+
+        fire(0.25, {
+          spread: 26,
+          startVelocity: 55,
+        });
+        fire(0.2, {
+          spread: 60,
+        });
+        fire(0.35, {
+          spread: 100,
+          decay: 0.91,
+          scalar: 0.8,
+        });
+        fire(0.1, {
+          spread: 120,
+          startVelocity: 25,
+          decay: 0.92,
+          scalar: 1.2,
+        });
+        fire(0.1, {
+          spread: 120,
+          startVelocity: 45,
+        });
+      }, 750);
+    }
+  }, [self.winner]);
+
   return (
-    <div className="h-full w-full bg-transparent">
+    <div className="h-full w-full bg-transparent relative">
+      <Details />
       <div className="container mx-auto h-full px-4 xs:px-8 py-8 flex flex-col items-center justify-between">
         <span className="font-bold text-beige text-xs">FIN DE LA PARTIE !</span>
         <div className="w-[1024px] overflow-hidden py-12 px-16 flex flex-col gap-10 bg-beige rounded-[60px] relative">
