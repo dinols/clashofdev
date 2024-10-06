@@ -7,6 +7,7 @@ import Timer from "#/components/Game/Elements/Timer";
 import Background from "#/components/Game/Elements/Background";
 import Keys from "#/components/Game/Elements/Keys";
 import Player from "#/components/Game/Elements/Player";
+import Score from "#/components/Game/Elements/Score";
 
 const Game: React.FC = () => {
   const { machineService } = useGameContext();
@@ -56,8 +57,11 @@ const Game: React.FC = () => {
 
   return (
     <div className="flex-none flex flex-col justify-end gap-10 p-10 h-full w-full overflow-hidden relative">
-      {isStarting && <Timer />}
+      {isStarting && <Timer hasOverlay />}
       <Background />
+      <div className="absolute top-24 left-1/2 transform -translate-x-1/2">
+        <Score />
+      </div>
       <div className="relative flex items-center justify-between">
         <Player id={self.id} username={self.name} character={self.character} />
         <Player
@@ -69,6 +73,9 @@ const Game: React.FC = () => {
       <div className="relative pl-20">
         <Keys />
       </div>
+      <span className="absolute top-8 left-1/2 transform -translate-x-1/2 font-bold text-beige text-xs">
+        3, 2, 1, FIGHT!
+      </span>
     </div>
   );
 };

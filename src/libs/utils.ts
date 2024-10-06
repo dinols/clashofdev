@@ -9,27 +9,27 @@ export const generateRandomString = (length: number): string => {
 };
 
 export const modeKeysDefinition = {
-  hard: 24,
-  medium: 16,
+  hard: 20,
+  medium: 14,
   easy: 10,
 };
 
 const alphabet = Array.from({ length: 26 }, (_, i) =>
   String.fromCharCode(97 + i)
 );
-const keys = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"];
-export const allKeys = [...keys, ...alphabet];
+const arrows = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"];
+export const allKeys = [...arrows, ...alphabet];
 
 export const generateKeys = (mode: GameMode): string[] => {
   const length = modeKeysDefinition[mode];
 
+  const keys = [...arrows];
+
   // Add some letters to the keys if the mode is not easy
-  if (mode !== "easy") {
-    keys.push(
-      ...alphabet
-        .sort(() => Math.random() - 0.5)
-        .slice(0, mode === "hard" ? alphabet.length : 2)
-    );
+  if (mode === "hard") {
+    keys.push(...alphabet);
+  } else if (mode === "medium") {
+    keys.push("a", "d");
   }
   return Array.from({ length }).map(() => {
     const randomIndex = Math.floor(Math.random() * keys.length);

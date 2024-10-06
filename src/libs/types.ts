@@ -34,6 +34,7 @@ export type Player = {
   name: string;
   character: string;
   inputs: string[];
+  winner?: boolean;
   host?: boolean;
   completedAt?: number;
 };

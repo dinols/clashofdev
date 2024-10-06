@@ -25,8 +25,8 @@ const Key: React.FC<{
       ref={ref}
       className={twMerge(
         "bg-white border border-black/5 rounded-[10px] shadow-inner-key w-[106px] h-[106px] flex items-center justify-center text-gray relative",
-        success && "text-green-mid bg-green-light",
-        error && "text-orange-mid bg-orange-light"
+        success && "text-green-mid bg-green-light shadow-glow",
+        error && "text-orange-mid bg-orange-light shadow-glow"
       )}
     >
       {character.startsWith("Arrow") ? (

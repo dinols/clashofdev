@@ -1,14 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
 import gsap from "gsap";
 import { useSelector } from "@xstate/react";
+import { twMerge } from "tailwind-merge";
 
 import { useGameContext } from "#/components/Game/MachineContext";
 
 const Player: React.FC<{
   id?: string;
+  lost?: boolean;
   username?: string;
   character: string;
-}> = ({ id, character, username }) => {
+}> = ({ id, lost = false, character, username }) => {
   const ref = useRef<HTMLDivElement>(null);
   const [animationComplete, setAnimationComplete] = useState(true);
 
@@ -53,7 +55,7 @@ const Player: React.FC<{
 
   return (
     <div className="relative flex flex-col items-center w-fit">
-      {type === "multiplayer" && (
+      {type === "multiplayer" && !!username && (
         <div className="bg-beige text-black text-xs font-bold py-2 px-4 rounded-2xl">
           {username}
         </div>
@@ -68,8 +70,17 @@ const Player: React.FC<{
         />
         <img
           src={`/game/${character}_overlay.webp`}
-          className="absolute opacity-0 z-10 select-none pointer-events-none transition-all duration-300"
+          className={twMerge(
+            "absolute opacity-0 z-10 select-none pointer-events-none transition-all duration-300",
+            lost && "opacity-40"
+          )}
         />
+        {lost && (
+          <img
+            src={`/game/${character}_tears.webp`}
+            className="absolute z-20 select-none pointer-events-none"
+          />
+        )}
       </div>
     </div>
   );

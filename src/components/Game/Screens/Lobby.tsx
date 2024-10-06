@@ -10,14 +10,14 @@ import Player from "#/components/Game/Elements/Player";
 import Button from "#/components/Game/Elements/Button";
 
 const Lobby: React.FC = () => {
-  const { sections, machineService } = useGameContext();
+  const { machineService } = useGameContext();
   const mode = useSelector(machineService, (state) => state.context.mode);
   const type = useSelector(machineService, (state) => state.context.type);
 
   return (
     <div className="h-full w-full bg-transparent">
       <div className="container mx-auto h-full px-4 xs:px-8 py-8 flex flex-col items-center justify-between">
-        <h1 className="font-bold text-beige text-xs">CLASH TIME!</h1>
+        <span className="font-bold text-beige text-xs">CLASH TIME!</span>
         <div className="w-[1024px] py-12 px-16 flex flex-col gap-8 bg-beige rounded-[60px] relative">
           <div className="flex items-center justify-between">
             <span className="uppercase text-xs opacity-80 text-black">
@@ -53,7 +53,7 @@ const Lobby: React.FC = () => {
             )}
             {mode === "hard" && (
               <div className="absolute top-2 left-[560px] transform -rotate-[0deg]">
-                <Key character="Z" />
+                <Key character="K" />
               </div>
             )}
           </div>

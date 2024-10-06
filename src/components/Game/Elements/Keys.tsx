@@ -26,7 +26,7 @@ const Keys: React.FC = () => {
         if (index === playerInputs.length) {
           return (
             <>
-              <div className="flex-none w-[106px] h-[106px] rounded-[10px] bg-white/20 border-2 border-dashed border-beige"></div>
+              <div className="shadow-glow flex-none w-[106px] h-[106px] rounded-[10px] bg-white/20 border-2 border-dashed border-beige"></div>
               <div key={index.toString()} className="w-fit flex-none">
                 <Key character={key} />
               </div>

@@ -104,7 +104,7 @@ export const machine = ({ code = null }: { code: string | null }) =>
               ...context.players,
               {
                 id: context.playerId,
-                name: event.data.name ?? "",
+                name: event.data.name ?? "Player 1",
                 character: event.data.character ?? "",
                 inputs: [],
                 host: context.players.length === 0,
@@ -128,12 +128,18 @@ export const machine = ({ code = null }: { code: string | null }) =>
       confirmLobby: assign({
         players: ({ context }) => {
           return [
-            ...context.players,
+            {
+              id: context.playerId,
+              name: "Player 1",
+              character: "",
+              inputs: [],
+              host: true,
+            },
             {
               id:
                 context.type === "solo" ? "opponent" : generateRandomString(16),
               character: context.type === "solo" ? "boosted" : "",
-              name: "Joueur 2",
+              name: "Player 2",
               inputs: [],
             },
           ];
@@ -182,6 +188,27 @@ export const machine = ({ code = null }: { code: string | null }) =>
           });
         },
       }),
+      assignWinner: assign({
+        players: ({ context }) => {
+          if (context.type === "multiplayer") {
+            // TODO With score
+            return context.players;
+          }
+
+          return context.players.map((player) => {
+            if (player.id === "opponent") return player;
+
+            const correctInputs = player.inputs.filter(
+              (input, index) => input === context.keys[index]
+            ).length;
+
+            return {
+              ...player,
+              winner: correctInputs >= Math.ceil(context.keys.length / 2) + 1,
+            };
+          });
+        },
+      }),
       resetSettings: assign({
         type: "solo",
         mode: "easy",
@@ -209,11 +236,29 @@ export const machine = ({ code = null }: { code: string | null }) =>
         return new Date().getTime() > context.startAt;
       },
       isCompleted: ({ context }) => {
-        return context.players.every(
-          (player) =>
-            player.inputs.length > 0 &&
-            player.inputs.length === context.keys.length
-        );
+        if (context.type === "multiplayer") {
+          return context.players.every(
+            (player) =>
+              player.inputs.length > 0 &&
+              player.inputs.length === context.keys.length
+          );
+        }
+
+        return context.players
+          .filter((f) => f.id !== "opponent")
+          .every((player) => {
+            const correctInputs = player.inputs.filter(
+              (input, index) => input === context.keys[index]
+            ).length;
+            const incorrectInputs = player.inputs.filter(
+              (input, index) => input !== context.keys[index]
+            ).length;
+
+            return (
+              correctInputs >= Math.ceil(context.keys.length / 2) + 1 ||
+              incorrectInputs >= Math.ceil(context.keys.length / 2)
+            );
+          });
       },
       isHost: ({ context }) => {
         return !!context.players[0]?.host;
@@ -310,7 +355,7 @@ export const machine = ({ code = null }: { code: string | null }) =>
         states: {
           paused: {
             after: {
-              5000: {
+              3500: {
                 target: "#cod.game.playing",
                 guard: "isStarted",
               },
@@ -318,10 +363,16 @@ export const machine = ({ code = null }: { code: string | null }) =>
           },
           playing: {
             entry: ["setTime"],
+            after: {
+              30000: {
+                target: "#cod.result",
+              },
+            },
             always: [
               {
                 target: "#cod.result",
                 guard: "isCompleted",
+                actions: ["assignWinner"],
               },
             ],
             on: {
@@ -342,6 +393,7 @@ export const machine = ({ code = null }: { code: string | null }) =>
           RESTART: {
             target: "#cod.game.paused",
             guard: "isHost",
+            actions: ["setKeys"],
           },
           HOME: {
             target: "#cod.lobby",
