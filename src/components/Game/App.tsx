@@ -7,7 +7,8 @@ import Mobile from "#/components/Game/Screens/Mobile";
 
 const App: React.FC<{
   sections: Section[];
-  code: string | null;
+  gameId: string | null;
+  playerId: string | null;
 }> = (props) => {
   return (
     <MachineProvider {...props}>

@@ -116,6 +116,13 @@ const Result: React.FC = () => {
               machineService.send({ type: "RESTART", data: {} });
             }}
           />
+          <Button
+            title="Quitter"
+            className="bg-purple-mid"
+            onClick={() => {
+              window.location.href = "/finale";
+            }}
+          />
         </div>
       </div>
     </div>

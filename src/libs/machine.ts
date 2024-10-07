@@ -1,6 +1,6 @@
 import { setup, assign, fromCallback } from "xstate";
 import type { EventObject } from "xstate";
-import type { MachineContext, MachineEvents, Player } from "./types";
+import type { GameType, MachineContext, MachineEvents, Player } from "./types";
 import { generateRandomString, generateKeys } from "./utils";
 
 const connectToWebsocket = fromCallback<
@@ -35,12 +35,13 @@ const connectToWebsocket = fromCallback<
 const listenToWebsocket = fromCallback<
   EventObject,
   {
-    socket?: WebSocket;
+    socket: WebSocket | null;
+    type: GameType;
   }
 >(({ input, sendBack }) => {
   const { socket } = input;
 
-  if (!socket) {
+  if (!socket && input.type === "multiplayer") {
     sendBack({ type: "CONNECTION_FAILURE" });
     return;
   }
@@ -50,12 +51,6 @@ const listenToWebsocket = fromCallback<
     const parsed = JSON.parse(event.data);
 
     switch (parsed.type) {
-      case "status":
-        sendBack({
-          type: "STATUS",
-          data: parsed.data,
-        });
-        break;
       default:
         console.log(parsed.data);
         break;
@@ -75,7 +70,13 @@ const listenToWebsocket = fromCallback<
   };
 });
 
-export const machine = ({ code = null }: { code: string | null }) =>
+export const machine = ({
+  gameId = null,
+  playerId = null,
+}: {
+  gameId: string | null;
+  playerId: string | null;
+}) =>
   setup({
     types: {
       events: {} as MachineEvents,
@@ -97,7 +98,18 @@ export const machine = ({ code = null }: { code: string | null }) =>
       }),
       setPlayer: assign({
         players: ({ context, event }) => {
-          if (!context.players.find((f) => f.id === context.playerId)) {
+          if (event.data.playerId) {
+            return context.players.map((player) => {
+              if (player.id === event.data.playerId) {
+                return {
+                  ...player,
+                  character: event.data.character,
+                  inputs: [],
+                };
+              }
+              return player;
+            });
+          } else if (!context.players.find((f) => f.id === context.playerId)) {
             return [
               ...context.players,
               {
@@ -156,6 +168,7 @@ export const machine = ({ code = null }: { code: string | null }) =>
         },
       }),
       confirmSelection: assign(({ context }) => {
+        // TODO Emit to server
         return context;
       }),
       setKeys: assign({
@@ -274,12 +287,22 @@ export const machine = ({ code = null }: { code: string | null }) =>
           });
       },
       isHost: ({ context }) => {
-        return !!context.players[0]?.host;
+        return (
+          context.players.find((player) => player.host)?.id === context.playerId
+        );
       },
       playersSelected: ({ context }) => {
+        if (context.type === "multiplayer") {
+          const isHost =
+            context.players.find((player) => player.host)?.id ===
+            context.playerId;
+          const bothSelected =
+            context.players.filter((player) => !!player.character).length === 2;
+          return isHost && bothSelected;
+        }
         return context.players
           .filter((f) => f.id !== "opponent")
-          .every((player) => player.character);
+          .every((player) => !!player.character);
       },
       isMultiplayer: ({ context }) => {
         return context.type === "multiplayer";
@@ -301,8 +324,8 @@ export const machine = ({ code = null }: { code: string | null }) =>
     /** @xstate-layout N4IgpgJg5mDOIC5QGMD2EDEBhA8gOTwFEsAVASXwH0AxAQTIBkBVAJUIG0AGAXUVAAdUsAJYAXYagB2fEAA9EAFgBMAGhABPRAA4AjADoArJ2MmjSgJwKdBgL421aCHoA2qAEZv1GAMqEGxEkpfEnI8AHFvLl4kEEERcSkZeQQdJX0lAGZUgy0lADZzJU4srTVNBAKlPQB2HQyFXK1OLRaDczsHdBd3T2x8ajIWAFlKBhwAIXGATSiZOLEJaRjkhQUMvRNOJSsdc3NOPLqyxCKq7b29pWrzHRbqrQ6QR26PL1w8AeHRien2HWiBEIFollic8pxDHklAZ6kpdM0MscEFo2hsMnlVgprhiDHVHs80JJJGBkOJJFA+gQAhQ8EEmFgsIRvJEeHMgQklqBkgZVBpEDpOEY9PkLOZaqtcvd8V1CcTScJyZSiKQaZRCCwWDgWLMYvMOUlFGsNiZtjpdvtDoi+QhoVVqgoLtVquixQ97E8ulAAIYAWzAPhItBITBZANi7MWBpS1nWxTqGS2cLFqSR1U41RqDr2CjyPIMBgx0qc3r9elgYGcJNEPkIgQACgxaFN1TrAfFI6CEOYeXoMemdFDbuZDkixeYaloMastjCFG0i3oS2AyxWq5TPiNfP4VfhW+H2yCufyBesstDuxkitctNUkSf9ILzJP7QY56tbO7nku9PwvQBXctMD3PUOyPaMbhqeoHW2BQDknO8in0Z1uzWKE7kyBdv34ZwvXUBUKQAaUIKY6zYZlgIjQ85EQcEDA2e5bk4PZ02UcwEIxYUB2aGFoU4HRqkw31l2w3D8IwCiD05aiEHtLQ9AaVYMi0DJzHRNoDDvB08kMFF9h5VJnQyQTSxEvDFT+MMQKo5JZPkrRFOU1Tc27O9LwhTIUIyaoMX42pjOXAAnOA-2casyMDFgSAk4EpOSM1ij0M91Lc69b2tHQGgzG5CgTZ1OCsFp-L0ILYBC6sAAkcCGDhWV1SjYrBCEC2hWF4WUpEMQzc49kOSxvIEx5JHQOAZEcNlJKjABaPIkWm41NgW4w4QXVxXnGmKoyxJFcghM0xThBplLPBdZSrfD1v1TtlCRNIM2qIxjCaLzhzaN1OmLISLtA6T8wzdNdCaZj7QsVMURqOM6i0G57hzIry0rUkvusxBXT0Ro0isLTBTS8oBSaSDuzyS8cXtHQit-ADICRhqUgyHJEvu1ImJhpiNOtG91iKLI6ksK8b3JnCzKgamoyhdY1nugx7QdA5VNc3M9AHQp8oLZQ5yKkqypFzsnwhWp0UvOoeSuUp0odBQ0bpm8bgBqc7DsIA */
     id: "cod",
     context: {
-      code,
-      playerId: generateRandomString(16),
+      code: gameId ?? null,
+      playerId: playerId ?? generateRandomString(16),
       error: null,
       socket: null,
       type: "solo",
@@ -315,7 +338,7 @@ export const machine = ({ code = null }: { code: string | null }) =>
     states: {
       loading: {
         after: {
-          1500: [
+          2500: [
             {
               target: "#cod.connecting",
               guard: "hasCode",
@@ -359,6 +382,7 @@ export const machine = ({ code = null }: { code: string | null }) =>
             target: "#cod.select",
             actions: assign({
               socket: ({ event }) => event.data.socket,
+              type: "multiplayer",
             }),
           },
           CONNECTION_ERROR: {
@@ -367,6 +391,14 @@ export const machine = ({ code = null }: { code: string | null }) =>
         },
       },
       select: {
+        invoke: {
+          id: "listenToWebsocket",
+          src: "listenToWebsocket",
+          input: ({ context: { socket, type } }) => ({
+            socket,
+            type: type!,
+          }),
+        },
         on: {
           SET_PLAYER: {
             actions: ["setPlayer"],
@@ -422,10 +454,6 @@ export const machine = ({ code = null }: { code: string | null }) =>
             target: "#cod.game.paused",
             guard: "isHost",
             actions: ["setKeys"],
-          },
-          HOME: {
-            target: "#cod.lobby",
-            guard: "isHost",
           },
         },
       },

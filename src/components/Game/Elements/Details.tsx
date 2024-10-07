@@ -40,27 +40,56 @@ const Details: React.FC = () => {
       />
       <div
         className={twMerge(
-          "absolute left-1/2 transform -translate-x-[660px] bottom-[25%] -rotate-6",
+          "absolute pointer-events-auto left-1/2 transform -translate-x-[660px] bottom-[25%] -rotate-6",
           value === "select" && "bottom-[20%]"
         )}
+        onClick={() => {
+          window.dispatchEvent(
+            new CustomEvent("change-cursor", { detail: Jury.sometimecrea })
+          );
+        }}
       >
-        <Cursor name={Jury.sometimecrea} side="right" />
+        <Cursor
+          name={Jury.sometimecrea}
+          side="right"
+          className="pointer-events-auto"
+          hidable
+        />
       </div>
       <div
         className={twMerge(
           "absolute left-1/2 bottom-[10%] transform translate-x-[512px] -rotate-12",
           value === "select" && "bottom-[12%]"
         )}
+        onClick={() => {
+          window.dispatchEvent(
+            new CustomEvent("change-cursor", { detail: Jury.maislina_ })
+          );
+        }}
       >
-        <Cursor name={Jury.maislina_} side="right" />
+        <Cursor
+          name={Jury.maislina_}
+          side="right"
+          hidable
+          className="pointer-events-auto"
+        />
       </div>
       <div
         className={twMerge(
           "absolute left-1/2 transform translate-x-[480px] top-[20%] -rotate-12",
           value === "select" && "top-[10%] left-1/3"
         )}
+        onClick={() => {
+          window.dispatchEvent(
+            new CustomEvent("change-cursor", { detail: Jury.LLCoolChris_ })
+          );
+        }}
       >
-        <Cursor name={Jury.LLCoolChris_} />
+        <Cursor
+          name={Jury.LLCoolChris_}
+          hidable
+          className="pointer-events-auto"
+        />
       </div>
     </div>
   );

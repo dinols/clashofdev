@@ -26,7 +26,11 @@ const CORS_HEADERS = {
   },
 };
 
-const server = Bun.serve<{ gameId: string; mode: string; playerId?: string }>({
+const server = Bun.serve<{
+  game: Game;
+  playerId: string;
+  gameId: string;
+}>({
   fetch(req, server) {
     const url = new URL(req.url);
 
@@ -41,7 +45,7 @@ const server = Bun.serve<{ gameId: string; mode: string; playerId?: string }>({
         return new Response("Game not found", { status: 404, ...CORS_HEADERS });
       }
 
-      const { players, inputs } = game;
+      const { players } = game;
       if (!players.find((p) => p.id === url.searchParams.get("playerId"))) {
         games.set(gameId, {
           ...game,
@@ -57,8 +61,9 @@ const server = Bun.serve<{ gameId: string; mode: string; playerId?: string }>({
 
       const success = server.upgrade(req, {
         data: {
+          game: games.get(gameId),
+          playerId: url.searchParams.get("playerId"),
           gameId,
-          players: games.get(gameId) || [],
         },
       });
 
@@ -78,7 +83,6 @@ const server = Bun.serve<{ gameId: string; mode: string; playerId?: string }>({
         inputs: generateKeys(mode as GameMode),
         players: [],
       });
-      console.log(JSON.stringify(games.get(gameId)));
       return new Response(JSON.stringify(games.get(gameId)), {
         status: 200,
         ...CORS_HEADERS,
@@ -89,22 +93,35 @@ const server = Bun.serve<{ gameId: string; mode: string; playerId?: string }>({
   },
   websocket: {
     open(ws) {
-      console.log("open", ws.data);
-      // const msg = `${ws.data.username} has entered the chat`;
-      // ws.subscribe("the-group-chat");
-      // server.publish("the-group-chat", msg);
+      // Player connected, broadcast the current game status
+      ws.subscribe(ws.data.gameId);
+      server.publish(
+        ws.data.gameId,
+        JSON.stringify({
+          type: "status",
+          data: {
+            keys: ws.data.game.inputs,
+            players: ws.data.game.players,
+          },
+        })
+      );
+      setInterval(() => {
+        ws.send(JSON.stringify({ type: "ping" }));
+      }, 15000);
     },
     message(ws, message) {
-      console.log("message", ws.data);
-      // this is a group chat
-      // so the server re-broadcasts incoming message to everyone
-      // server.publish("the-group-chat", `${ws.data.username}: ${message}`);
+      // Rebroadcast the message to all players
+      const { type, data } = JSON.parse(message as string);
+      server.publish(
+        ws.data.gameId,
+        JSON.stringify({
+          type,
+          data,
+        })
+      );
     },
     close(ws) {
-      console.log("close error");
-      // const msg = `${ws.data.username} has left the chat`;
-      // ws.unsubscribe("the-group-chat");
-      // server.publish("the-group-chat", msg);
+      console.log("close error", ws.data);
     },
   },
 });

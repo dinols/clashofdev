@@ -93,7 +93,12 @@ const Lobby: React.FC = () => {
         </div>
         <div className="flex gap-4">
           <Button
-            title="Start the game"
+            disabled={type === "multiplayer"}
+            title={
+              type === "multiplayer"
+                ? "Je n'ai pas eu le temps :("
+                : "Start the game"
+            }
             onClick={() => {
               machineService.send({
                 type: "CONFIRM_LOBBY",

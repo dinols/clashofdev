@@ -67,7 +67,6 @@ export type MachineEvents = {
     | "CONFIRM_LOBBY"
     | "CONFIRM_SELECTION"
     | "KEYPRESS"
-    | "RESTART"
-    | "HOME";
+    | "RESTART";
   data: Record<string, any>;
 };

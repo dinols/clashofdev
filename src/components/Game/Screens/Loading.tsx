@@ -1,9 +1,10 @@
 import React from "react";
+import Logo from "#/components/Game/Elements/Logo";
 
 const Lobby: React.FC = () => {
   return (
-    <div className="h-full w-full flex items-center justify-center bg-blue-mid">
-      <h1>Loading du logo clash of dev</h1>
+    <div className="h-full w-full overflow-hidden flex items-center justify-center bg-purple-light">
+      <Logo />
     </div>
   );
 };

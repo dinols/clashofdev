@@ -7,13 +7,15 @@ import Finale from '#/layouts/Finale.astro';
 import App from '#/components/Game/App';
 
 const sections = await getCollection('section');
-const { code = null } = Astro.params;
+const { code = "" } = Astro.params;
+const [gameId, playerId] = code.split('/');
 ---
 
 <Finale>
   <App
     sections={sections.map((section) => section.data)}
-    code={code}
+    gameId={gameId}
+    playerId={playerId}
     client:load
   />
 </Finale>

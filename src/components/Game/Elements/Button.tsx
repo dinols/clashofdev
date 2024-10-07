@@ -18,7 +18,9 @@ const Button: React.FC<{
       onClick={onClick}
     >
       <span className="relative z-10">{title}</span>
-      <div className="absolute z-0 bottom-0 h-full w-1/2 opacity-0 group-hover:opacity-100 group-hover:w-full transition-all duration-300 rounded-[60px] bg-black/10"></div>
+      {!disabled && (
+        <div className="absolute z-0 bottom-0 h-full w-1/2 opacity-0 group-hover:opacity-100 group-hover:w-full transition-all duration-300 rounded-[60px] bg-black/10"></div>
+      )}
     </button>
   );
 };
