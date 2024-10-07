@@ -3,19 +3,17 @@ export const prerender = false;
 
 import { getCollection } from 'astro:content';
 
-import Finale from '#/layouts/Finale.astro';
+import FinaleLayout from '#/layouts/Finale.astro';
 import App from '#/components/Game/App';
 
 const sections = await getCollection('section');
-const { code = "" } = Astro.params;
-const [gameId, playerId] = code.split('/');
 ---
 
-<Finale>
+<FinaleLayout>
   <App
     sections={sections.map((section) => section.data)}
-    gameId={gameId}
-    playerId={playerId}
+    gameId={null}
+    playerId={null}
     client:load
   />
-</Finale>
+</FinaleLayout>
