@@ -90,13 +90,13 @@ const { icon, hasSticker = false } = Astro.props;
 
       (this.$store.global as AlpineStore).toggleCursor();
 
-      for (const cursor of cursors) {
-        if (cursor.dataset.name === store.cursor) {
-          cursor.classList.add('hidden');
-        } else {
-          cursor.classList.remove('hidden');
-        }
-      }
+      // for (const cursor of cursors) {
+      //   if (cursor.dataset.name === store.cursor) {
+      //     cursor.classList.add('hidden');
+      //   } else {
+      //     cursor.classList.remove('hidden');
+      //   }
+      // }
     },
   }));
 </script>
