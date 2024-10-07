@@ -1,15 +1,15 @@
 ---
 import { getCollection } from 'astro:content';
 
-import Main from '#/layouts/Main.astro';
-import Hero from '#/components/Hero.astro';
-import Section from '#/components/Section.astro';
-import BottomSection from '#/components/BottomSection.astro';
+import Piscine from '#/layouts/Piscine.astro';
+import Hero from '#/components/Home/Hero.astro';
+import Section from '#/components/Home/Section.astro';
+import BottomSection from '#/components/Home/BottomSection.astro';
 
 const sections = await getCollection('section');
 ---
 
-<Main>
+<Piscine>
   <Hero />
   {
     sections.map((section) => (
@@ -22,4 +22,4 @@ const sections = await getCollection('section');
     ))
   }
   <BottomSection />
-</Main>
+</Piscine>

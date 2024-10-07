@@ -30,20 +30,20 @@
  * - Cycles through custom cursor states defined in the `Jury` enum, if the window width is 1024px or greater.
  */
 
-import Lenis from 'lenis';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Draggable } from 'gsap/Draggable';
-import Alpine, { type AlpineComponent } from 'alpinejs';
+import Lenis from "lenis";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { Draggable } from "gsap/Draggable";
+import Alpine, { type AlpineComponent } from "alpinejs";
 
-import { Jury, type AlpineStore } from '#/libs/types';
+import { Jury, type AlpineStore } from "#/libs/types";
 
 gsap.registerPlugin(ScrollTrigger);
 gsap.registerPlugin(Draggable);
 
 const lenis = new Lenis();
 
-lenis.on('scroll', ScrollTrigger.update);
+lenis.on("scroll", ScrollTrigger.update);
 
 gsap.ticker.add((time) => {
   lenis.raf(time * 1000);
@@ -53,30 +53,25 @@ gsap.ticker.lagSmoothing(0);
 
 const timelines: GSAPTimeline[] = [];
 
-Alpine.store('global', {
-  cursor: undefined,
+Alpine.store("global", {
+  cursor: -1,
   hovering: false,
   darkTheme: false,
   scrollProgress: 0,
 
   init() {
-    lenis.on('scroll', (e) => {
+    lenis.on("scroll", (e) => {
       this.scrollProgress = e.progress * 100;
     });
 
-    Alpine.effect(() => {
-      if (this.cursor) document.body.classList.add('hide-cursor');
-      else document.body.classList.remove('hide-cursor');
-    });
-
-    const buttons = document.querySelectorAll('button');
-    const anchors = document.querySelectorAll('a');
+    const buttons = document.querySelectorAll("button");
+    const anchors = document.querySelectorAll("a");
 
     [...buttons, ...anchors].forEach((el) => {
-      el.addEventListener('mouseenter', () => {
+      el.addEventListener("mouseenter", () => {
         this.hovering = true;
       });
-      el.addEventListener('mouseleave', () => {
+      el.addEventListener("mouseleave", () => {
         this.hovering = false;
       });
     });
@@ -84,7 +79,7 @@ Alpine.store('global', {
 
   toggleTheme() {
     this.darkTheme = !this.darkTheme;
-    document.body.classList.toggle('dark');
+    document.body.classList.toggle("dark");
 
     const sections = document.querySelectorAll('[x-data="section"]');
 
@@ -94,8 +89,8 @@ Alpine.store('global', {
         const tl1 = gsap.timeline({
           scrollTrigger: {
             trigger: section,
-            start: 'top 90%',
-            end: 'top 30%',
+            start: "top 90%",
+            end: "top 30%",
             scrub: 0.5,
           },
         });
@@ -115,8 +110,8 @@ Alpine.store('global', {
         const tl2 = gsap.timeline({
           scrollTrigger: {
             trigger: section,
-            start: 'top 0%',
-            end: 'top -80%',
+            start: "top 0%",
+            end: "top -80%",
             scrub: 0.5,
           },
         });
@@ -132,7 +127,7 @@ Alpine.store('global', {
     } else {
       timelines.forEach((tl) => {
         sections.forEach((section) => {
-          gsap.set(section, { clearProps: 'all' });
+          gsap.set(section, { clearProps: "all" });
         });
         tl.kill();
       });
@@ -143,12 +138,15 @@ Alpine.store('global', {
     if (window.innerWidth < 1024) return;
 
     const cursors = Object.values(Jury);
-    if (!this.cursor) {
-      this.cursor = cursors[0];
-      return;
+
+    if (this.cursor < 0) {
+      this.cursor = 0;
+    } else {
+      this.cursor = cursors[this.cursor + 1] ? this.cursor + 1 : 0;
     }
 
-    const currentIndex = cursors.indexOf(this.cursor);
-    this.cursor = cursors[currentIndex + 1] ?? cursors[0];
+    window.dispatchEvent(
+      new CustomEvent("change-cursor", { detail: cursors[this.cursor] })
+    );
   },
 } as AlpineComponent<AlpineStore>);

@@ -1,0 +1,114 @@
+---
+// This component is used to display the hero of the website.
+
+import { Jury, Color } from '#/libs/types';
+
+import Marquee from '#/components/Home/Elements/Marquee.astro';
+import Sticker from '#/components/Global/Elements/Sticker';
+import Magnetic from '#/components/Home/Animated/Magnetic.astro';
+import Card from '#/components/Home/Elements/Card.astro';
+import Cursor from '#/components/Global/Elements/Cursor';
+---
+
+<section
+  x-data="hero"
+  class="min-h-[calc(100vh-80px)] lg:min-h-[calc(100vh-60px)] w-screen overflow-hidden -mx-4 xs:-mx-8 px-4 xs:px-8 flex flex-col gap-8 py-2"
+>
+  <div
+    class="flex-1 flex flex-col lg:flex-row lg:items-center gap-x-4 gap-y-12 py-12 justify-evenly lg:justify-between opacity-0 translate-y-24"
+  >
+    <h1 class="invisible absolute">Clash of dev - La piscine</h1>
+    <div
+      x-ref="title-web"
+      class="hidden md:flex flex-col gap-2 text-black dark:text-beige text-7xl xl:text-8xl 2xl:text-9xl font-semibold"
+    >
+      <span class="hidden md:inline-block">Que le plus fort,</span>
+      <div class="italic flex items-center gap-4">
+        <Magnetic>
+          <img
+            alt="sticker-cod-alt"
+            src="/sticker-cod-alt.svg"
+            class="h-20 w-auto"
+          />
+        </Magnetic>
+        <span> l'emporte ! </span>
+      </div>
+    </div>
+    <div
+      class="flex md:hidden mx-auto flex-col text-black dark:text-beige gap-3 text-5xl xs:text-6xl font-semibold"
+    >
+      <div class="flex items-end gap-4">
+        <span>Que le </span>
+        <Magnetic>
+          <img
+            alt="sticker-cod-alt"
+            src="/sticker-cod-alt.svg"
+            class="h-14 xs:h-16 w-auto"
+          />
+        </Magnetic>
+      </div>
+      <span class="inline-block">plus fort,</span>
+      <span class="italic flex items-center gap-4">l'emporte !</span>
+    </div>
+    <div class="w-fit relative mx-auto lg:mx-12 xl:mx-20">
+      <Card icon="/crown.svg" hasSticker />
+
+      
+
+      <div class="absolute bottom-2 -right-4">
+        <Cursor
+          name={Jury.LLCoolChris_}
+        />
+        
+      </div>
+
+      <div class="absolute bottom-2 -left-4">
+        <Cursor
+          side="right"
+          name={Jury.sometimecrea}
+        />
+      </div>
+      <div class="absolute bottom-40 -right-8">
+        <Cursor
+          name={Jury.maislina_}
+        />
+      </div>
+      
+      
+      
+    </div>
+  </div>
+  <Marquee
+    speed={8}
+    class="-mx-4 xs:-mx-8 opacity-0 translate-y-12 w-screen text-black dark:text-beige"
+  >
+    <span
+      class="text-6xl xs:text-7xl lg:text-8xl xl:text-9xl 2xl:text-10xl font-semibold"
+      >{'<A>Front les Tous!'}</span
+    >
+    <Sticker size="medium" color={Color.green} name="tag" />
+    <span
+      class="text-6xl xs:text-7xl lg:text-8xl xl:text-9xl 2xl:text-10xl font-semibold"
+    >
+      Clash of Dev
+    </span>
+    <Sticker size="medium" name="smile" color={Color.black} />
+  </Marquee>
+</section>
+<script>
+  import Alpine from 'alpinejs';
+  import gsap from 'gsap';
+
+  Alpine.data('hero', () => ({
+    init() {
+      for (const [index, elem] of Array.from(this.$root.children).entries()) {
+        gsap.to(elem, {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          delay: (index + 1) * 0.2,
+        });
+      }
+    },
+  }));
+</script>

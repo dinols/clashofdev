@@ -1,0 +1,38 @@
+---
+// This component is used to display the last section of the website
+
+import Button from '#/components/Home/Elements/Button.astro';
+import Sticker from '#/components/Global/Elements/Sticker';
+import Magnetic from '#/components/Home/Animated/Magnetic.astro';
+---
+
+<section
+  class="-mx-4 xs:-mx-8 w-screen h-[65vh] lg:h-[calc(100vh-40px)] min-h-[540px] relative z-10 px-4 xs:px-8"
+>
+  <div
+    class="rounded-[60px] relative w-full h-full bg-black dark:bg-blue-dark py-12 px-12 xl:px-24 flex flex-col items-center justify-between"
+  >
+    <div></div>
+    <div class="flex relative flex-col gap-12 w-full max-w-screen-2xl mx-auto">
+      <span class="text-white opacity-80 text-xs">/ FINALE02</span>
+      <span
+        class="text-3xl leading-snug xs:text-5xl xs:leading-tight font-sans md:text-7xl md:leading-tight lg:text-8xl 2xl:text-10xl font-semibold text-white"
+      >
+        <span>Click Me</span>
+        <span class="inline-block md:ml-3 md:mr-9 2xl:ml-6 2xl:mr-16">?</span>
+        <span>Might enter the finals </span>
+        <Magnetic
+          class="inline-block absolute top-3/4 left-2/3 xs:top-auto xs:left-auto"
+        >
+          <Sticker name="smile" size="large" />
+        </Magnetic>
+      </span>
+    </div>
+    <Button href="/finale" text="Enter Next Level" color="white" />
+  </div>
+
+  <div
+    class="h-full w-full -z-10 top-24 absolute left-0 bg-beige dark:bg-black"
+  >
+  </div>
+</section>

@@ -1,10 +1,10 @@
 ---
-import Main from '#/layouts/Main.astro';
-import Magnetic from '#/components/Animated/Magnetic.astro';
-import Button from '#/components/Widgets/Button.astro';
+import Piscine from '#/layouts/Piscine.astro';
+import Magnetic from '#/components/Home/Animated/Magnetic.astro';
+import Button from '#/components/Home/Elements/Button.astro';
 ---
 
-<Main>
+<Piscine>
   <div class="flex-1 flex flex-col items-center gap-12 justify-center">
     <Magnetic class="relative">
       <span
@@ -17,4 +17,4 @@ import Button from '#/components/Widgets/Button.astro';
     </Magnetic>
     <Button text="Retour à l'accueil" href="/" color="black" />
   </div>
-</Main>
+</Piscine>

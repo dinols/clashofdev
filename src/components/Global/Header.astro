@@ -1,0 +1,42 @@
+---
+// This component is used to display the navigation and the progress bar of the website.
+
+interface Props {
+  tag?: string;
+  hidePercentage?: boolean;
+  href?: string;
+}
+
+const { tag = 'LA PISCINE', hidePercentage, href = "/" } = Astro.props;
+
+import ProgressBar from '#/components/Home/Elements/ProgressBar.astro';
+import Tag from '#/components/Home/Elements/Tag.astro';
+import Toggle from '#/components/Home/Elements/Toggle.astro';
+import Magnetic from '#/components/Home/Animated/Magnetic.astro';
+---
+
+<ProgressBar />
+<nav
+  x-data
+  class="h-10 z-10 sticky flex items-center justify-between top-10 lg:top-5 w-full"
+>
+  <div class="flex-1">
+    <a href={href} class="flex w-fit">
+      <Magnetic>
+        <Tag text={tag} />
+      </Magnetic>
+    </a>
+  </div>
+  {
+    hidePercentage ? null : (
+      <div
+        class="w-12 text-center font-bold text-xs text-black dark:text-white"
+        x-show="Math.round($store.global.scrollProgress) < 100"
+        x-text="Math.round($store.global.scrollProgress) + '%'"
+      />
+    )
+  }
+  <div class="flex-1 flex justify-end">
+    <Toggle />
+  </div>
+</nav>
